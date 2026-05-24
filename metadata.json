@@ -1,0 +1,8 @@
+{
+  "name": "Đại lý Thuế Thành Phố",
+  "description": "Trung tâm thông tin và dịch vụ thuế thực chiến dành cho hộ kinh doanh, cá nhân kinh doanh online, cho thuê nhà và doanh nghiệp nhỏ.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

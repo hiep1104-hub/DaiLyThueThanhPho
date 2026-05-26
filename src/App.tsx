@@ -47,7 +47,10 @@ import { ServiceDetail, LegalDoc, PracticalGuide, CaseStudy, LeadSubmission, Qui
 
 export default function App() {
   // Navigation & Sub-page States
-  const [activeTab, setActiveTab] = useState<string>("home");
+  const [activeTab, setActiveTab] = useState<string>("services");
+  const [lookupSubTab, setLookupSubTab] = useState<"search" | "calculator">("search");
+  const [serviceSubView, setServiceSubView] = useState<"catalog" | "lifecycle">("catalog");
+  const [lifecycleEntity, setLifecycleEntity] = useState<"hkd" | "dn">("hkd");
   
   // Interactive filters
   const [serviceGroupFilter, setServiceGroupFilter] = useState<string>("ALL");
@@ -66,6 +69,7 @@ export default function App() {
   // Calculator 1: HKD
   const [calcHkdRevenue, setCalcHkdRevenue] = useState<number>(350000000);
   const [calcHkdSector, setCalcHkdSector] = useState<string>("BL");
+  const [calcHkdPlatformPayment, setCalcHkdPlatformPayment] = useState<"yes" | "no">("yes");
   // Calculator 2: Rent
   const [calcRentMonthly, setCalcRentMonthly] = useState<number>(25000000);
   const [calcRentMonths, setCalcRentMonths] = useState<number>(12);
@@ -78,7 +82,7 @@ export default function App() {
   const [chatHistory, setChatHistory] = useState<{ sender: "user" | "bot"; text: string; timestamp: string }[]>([
     {
       sender: "bot",
-      text: "Chào bạn! Tôi là Trợ lý AI thực chiến từ Đại lý Thuế Thành Phố. Bạn cần tư vấn gỡ rối về dòng tiền Shopee/TikTok Shop, quyết toán thuế cho thuê nhà, hay rà soát sổ sách hộ kinh doanh?",
+      text: "Chào bạn! Tôi là Trợ lý AI từ Đại lý Thuế Thành Phố. Bạn cần tư vấn gỡ rối về dòng tiền Shopee/TikTok Shop, quyết toán thuế cho thuê nhà, hay rà soát sổ sách hộ kinh doanh?",
       timestamp: new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })
     }
   ]);
@@ -119,6 +123,16 @@ export default function App() {
   useEffect(() => {
     fetchLeads();
   }, []);
+
+  // Sync selected service when service group filter changes to ensure instant detailed view alignment
+  useEffect(() => {
+    const filtered = SERVICES_DATA.filter(
+      (s) => serviceGroupFilter === "ALL" || s.group === serviceGroupFilter
+    );
+    if (filtered.length > 0) {
+      setSelectedService(filtered[0]);
+    }
+  }, [serviceGroupFilter]);
 
   // Handle lead submission
   const handleLeadSubmit = async (e: React.FormEvent) => {
@@ -262,7 +276,7 @@ export default function App() {
     } catch (err) {
       setChatHistory(prev => [...prev, {
         sender: "bot",
-        text: "Xin lỗi, kết nối mạng tạm thời bị lỗi. Theo luật thuế thực tế đối với hộ kinh doanh/cá nhân, doanh thu từ 100 triệu/năm trở lên có tỷ lệ đóng là 1.5% (Shopee) hoặc 10% (Chung cư thuê). Bạn hãy gửi số điện thoại tại form liên hệ để tôi gọi lại ngay!",
+        text: "Xin lỗi, kết nối mạng tạm thời bị lỗi. Theo luật thuế thực tế đối với hộ kinh doanh/cá nhân, doanh thu từ 200 triệu/năm trở lên có tỷ lệ đóng là 1.5% (Shopee) hoặc 10% (Chung cư thuê) từ ngày 01/01/2026. Bạn hãy gửi số điện thoại tại form liên hệ để tôi gọi lại ngay!",
         timestamp: new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })
       }]);
     } finally {
@@ -301,10 +315,24 @@ export default function App() {
       const vatRate = sectorObj ? sectorObj.vat : 1.0;
       const pitRate = sectorObj ? sectorObj.pit : 0.5;
 
-      const isExempt = calcHkdRevenue <= 100000000;
+      const isExempt = calcHkdRevenue <= 200000000;
       const totalTax = isExempt ? 0 : (calcHkdRevenue * totalRate) / 100;
       const vatAmount = isExempt ? 0 : (calcHkdRevenue * vatRate) / 100;
       const pitAmount = isExempt ? 0 : (calcHkdRevenue * pitRate) / 100;
+
+      let explanationText = "";
+      if (isExempt) {
+        explanationText = "Tổng doanh thu kinh doanh trong năm dương lịch từ 200.000.000đ trở xuống thuộc diện MIỄN nộp thuế GTGT & TNCN (quy định mới nhất áp dụng từ năm 2026).";
+        if (calcHkdPlatformPayment === "yes") {
+          explanationText += " Đặc biệt, nhờ thanh toán qua sàn TMĐT tự động kê khai thuế thay (0đ do dưới ngưỡng), bạn hoàn toàn không phải làm thủ tục đăng ký nộp tờ khai quý/năm.";
+        }
+      } else {
+        if (calcHkdPlatformPayment === "yes") {
+          explanationText = `SÀN TMĐT NỘP THAY: Vì giao dịch có thanh toán qua sàn (Shopee, TikTok Shop,...), SÀN THỰC HIỆN NỘP THUẾ DÙM bạn trực tiếp trích từ doanh thu. Chủ shop không cần tự lập tờ khai thuế hàng tháng, hàng quý, và không phải quyết toán thuế cuối năm. Tổng số thuế sàn khấu trừ nộp thay ước tính là ${totalTax.toLocaleString()} VNĐ (GTGT ${vatRate}%, TNCN ${pitRate}%).`;
+        } else {
+          explanationText = `TỰ KÊ KHAI QUÝ: Do giao dịch không thanh toán qua sàn (COD ngoài, chuyển khoản lẻ, thỏa thuận tự do ngoài cổng thanh toán của sàn), bạn BẮT BUỘC phải thực hiện tự kê khai tờ khai thuế 01/CNKD định kỳ hàng quý và nộp thuế ${totalRate}% (Bao gồm GTGT ${vatRate}% và TNCN ${pitRate}%).`;
+        }
+      }
 
       return {
         isExempt,
@@ -312,21 +340,19 @@ export default function App() {
         vatAmount,
         pitAmount,
         rate: totalRate,
-        explanation: isExempt 
-          ? "Tổng doanh thu kinh doanh trong năm dương lịch từ 100.000.000đ trở xuống thuộc diện MIỄN nộp thuế GTGT & TNCN."
-          : `Áp dụng tỷ lệ đóng thuế của ngành "${sectorObj?.name}": ${totalRate}% (Tách riêng: GTGT ${vatRate}%, TNCN ${pitRate}%).`
+        explanation: explanationText
       };
     } else if (calcType === "rent") {
       const totalRevenue = calcRentMonthly * calcRentMonths;
-      const isExempt = totalRevenue <= 100000000;
+      const isExempt = totalRevenue <= 200000000;
       const totalTax = isExempt ? 0 : totalRevenue * 0.10; // 5% GTGT + 5% TNCN
       return {
         isExempt,
         totalRevenue,
         totalTax,
         explanation: isExempt 
-          ? "Do doanh thu cho thuê cả năm dưới 100 triệu, bạn được miễn nộp thuế. Lưu ý vẫn nộp hồ sơ thuế khai để tránh chậm trễ."
-          : `Tổng doanh thu năm là ${totalRevenue.toLocaleString()}đ (vượt ngưỡng 100tr), áp mức thuế khoán cho thuê tài sản 10% (5% GTGT + 5% TNCN).`
+          ? "Do doanh thu cho thuê cả năm dưới 200 triệu đồng, bạn được miễn nộp thuế theo luật định mới từ năm 2026. Lưu ý vẫn nộp tờ khai kê khai đầy đủ."
+          : `Tổng doanh thu năm là ${totalRevenue.toLocaleString()}đ (vượt ngưỡng 200tr), áp mức thuế suất cho thuê tài sản 10% (5% GTGT + 5% TNCN).`
       };
     } else {
       // penalty rate
@@ -362,7 +388,7 @@ export default function App() {
           <span>Nghị định 125/2020/NĐ-CP & Luật Quản lý Thuế mới nhất về rà soát rủi ro TMĐT năm 2026</span>
         </div>
         <div className="hidden md:flex items-center gap-4 text-gray-300">
-          <span>Hỗ trợ khẩn cấp: <strong>090.123.4567</strong></span>
+          <span>Hỗ trợ khẩn cấp: <strong>0819.319.919</strong></span>
           <span>● Hệ thống Đại lý Thuế được cấp phép</span>
         </div>
       </div>
@@ -372,7 +398,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-3.5 flex flex-col md:flex-row justify-between items-center gap-4">
           
           {/* Brand Identity with Burgundy + Navy contrast */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab("home")}>
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab("services")}>
             <div className="w-12 h-12 bg-[#800020] flex items-center justify-center rounded shadow-md relative group">
               <span className="text-white font-extrabold text-2xl tracking-tighter">TP</span>
               <div className="absolute inset-0.5 border border-white/20 rounded"></div>
@@ -380,97 +406,59 @@ export default function App() {
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[#001F3F] font-black text-xl tracking-tight uppercase">DAILYTHUETP.COM.VN</span>
-                <span className="bg-green-100 text-green-800 text-[10px] font-bold px-1.5 py-0.2 rounded border border-green-200 uppercase">Thực chiến</span>
               </div>
-              <p className="text-[#800020] text-[11px] font-bold tracking-widest uppercase">Đại lý Thuế Thành Phố — Trung tâm giải pháp thuế số 1</p>
+              <p className="text-[#800020] text-[11px] font-bold tracking-widest uppercase">Đại lý Thuế Thành Phố — Trung tâm giải pháp thuế</p>
             </div>
           </div>
 
-          {/* Desktop Navigation Link Menu */}
-          <nav className="flex flex-wrap items-center justify-center gap-1.5 md:gap-3 text-[13.5px] font-semibold text-gray-600">
-            {[
-              { id: "home", label: "TRANG CHỦ" },
-              { id: "services", label: "DỊCH VỤ" },
-              { id: "lookup", label: "TRA CỨU THUẾ" },
-              { id: "guides", label: "KIẾN THỨC BÀI HỌC" },
-              { id: "laws", label: "THƯ VIỆN LUẬT" },
-              { id: "calculator", label: "CÔNG CỤ TÍNH" },
-              { id: "faq", label: "HỎI ĐÁP" },
-              { id: "cases", label: "CASE STUDY" },
-            ].map((t) => (
-              <button
-                key={t.id}
-                id={`nav-btn-${t.id}`}
-                onClick={() => setActiveTab(t.id)}
-                className={`px-3 py-1.5 rounded transition-all duration-150 uppercase tracking-tight ${
-                  activeTab === t.id 
-                    ? "bg-[#800020] text-white shadow-sm" 
-                    : "hover:bg-gray-100 text-[#001F3F] hover:text-[#800020]"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-
-            {/* Admin Panel Access Indicator Button */}
-            <button 
-              id="admin-entry-btn"
-              onClick={() => {
-                setActiveTab("admin");
-                if (!adminAuth) {
-                  // Keep it to view lead log
-                }
-              }}
-              className={`p-2 rounded-full border transition-all ${
-                activeTab === "admin" 
-                  ? "bg-[#001F3F] text-white border-[#001F3F]" 
-                  : "bg-gray-50 text-gray-500 hover:text-red-700 border-gray-200"
-              }`}
-              title="Khu vực Quản lý Hồ sơ Khách hàng (Admin)"
-            >
-              <Settings size={15} />
-            </button>
-          </nav>
-
+          {/* Global Header has been simplified (tabs removed) */}
           <div className="flex items-center gap-2 mt-2 md:mt-0">
             <a 
-              href="tel:0901234567" 
+              href="tel:0819319919" 
               className="bg-[#001F3F] hover:bg-[#800020] text-white px-4 py-2 rounded text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow transition-all duration-200"
             >
               <PhoneCall size={14} className="animate-pulse" />
-              HOTLINE GẤP
+              HOTLINE: 0819.319.919
             </a>
           </div>
         </div>
       </header>
 
-      {/* Breadcrumbs for better UX & SEO structure */}
-      <div id="breadcrumb-strip" className="bg-white border-b border-gray-200 py-1 px-4 md:px-8 text-xs text-gray-500">
-        <div className="max-w-7xl mx-auto flex items-center gap-2">
-          <span>Trang chủ</span>
-          <ChevronRight size={12} />
-          <span className="text-[#800020] font-bold uppercase">
-            {activeTab === "home" && "Bảng tin thực chiến"}
-            {activeTab === "services" && "Hệ thống dịch vụ thuế trọn gói"}
-            {activeTab === "lookup" && "Cổng tra cứu chỉ số thuế cơ bản"}
-            {activeTab === "guides" && "Cẩm nang hướng dẫn bóc tách dòng tiền"}
-            {activeTab === "laws" && "Tủ sách pháp luật thuế mới ban hành"}
-            {activeTab === "calculator" && "Phần mềm tính thử số thuế trực tuyến"}
-            {activeTab === "faq" && "Hỏi đáp nhanh & Tư vấn cùng Trợ lý AI"}
-            {activeTab === "cases" && "Case Study giải cứu hồ sơ thực tế"}
-            {activeTab === "admin" && "Hệ thống quản trị hồ sơ Khách hàng tiềm năng"}
-          </span>
-        </div>
-      </div>
-
       {/* Main Container Grid */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-6 flex-1 flex flex-col lg:flex-row gap-6 w-full">
         
         {/* LEFT COLUMN: Main viewport of the applet, dynamically changing */}
-        <div className="flex-1 min-w-0 bg-white border border-gray-200 shadow-sm rounded-lg p-4 md:p-8">
+        <div className="flex-1 min-w-0 bg-white border border-gray-200 shadow-sm rounded-lg p-4 md:p-8 space-y-6">
           
-          {/* TAB 1: HOME PAGE */}
-          {activeTab === "home" && (
+          {/* LOCAL INTERACTION SWITCHER (Professional Tax Portal Workspace) */}
+          <div className="border-b border-gray-200 pb-4 flex items-center justify-between gap-4">
+            <div className="flex flex-wrap gap-1 bg-slate-100 p-1 rounded-lg border border-gray-200 shadow-sm w-full">
+              {[
+                { id: "services", label: "📋 1. CHỌN MÔ HÌNH CỦA BẠN (Lộ Trình Dịch Vụ)" },
+                { id: "calculator", label: "🧮 2. TỰ TÍNH TIỀN THUẾ (Bấm Tính Thử Thuế & Tiền Phạt)" },
+                { id: "lookup", label: "🔍 3. TRA CỨU TIÊU CHUẨN (Mức Thuế Suất & Văn Bản Luật)" },
+                { id: "faq", label: "🤖 4. HỎI ĐÁP AI & TƯ VẤN (Tư Vấn & Nộp Hồ Sơ Từ Xa)" },
+              ].map((subTab) => (
+                <button
+                  key={subTab.id}
+                  id={`local-nav-btn-${subTab.id}`}
+                  onClick={() => {
+                    setActiveTab(subTab.id);
+                  }}
+                  className={`px-3.5 py-2 text-xs font-bold rounded-md transition-all uppercase tracking-tight flex items-center gap-1.5 flex-1 justify-center ${
+                    activeTab === subTab.id
+                      ? "bg-[#800020] text-white shadow-sm font-black"
+                      : "text-[#001F3F] hover:bg-white hover:text-[#800020]"
+                  }`}
+                >
+                  {subTab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* TAB 1: HOME PAGE DISABLED */}
+          {false && (
             <div id="view-tab-home" className="space-y-8">
               {/* Strong Hero Banner designed carefully centered on premium typography */}
               <div className="bg-gradient-to-br from-[#001F3F]/5 to-[#800020]/5 p-6 md:p-10 border-l-8 border-[#800020] rounded-r-lg relative overflow-hidden">
@@ -484,7 +472,7 @@ export default function App() {
                   </div>
                   <h2 className="text-3xl md:text-5xl font-black text-[#001F3F] leading-tight font-serif">
                     ĐẠI LÝ THUẾ THÀNH PHỐ <br />
-                    <span className="text-[#800020]">GIẢI PHÁP THUẾ THỰC CHIẾN</span>
+                    <span className="text-[#800020]">GIẢI PHÁP THUẾ</span>
                   </h2>
                   <p className="text-gray-700 text-base md:text-lg max-w-3xl leading-relaxed">
                     Chúng tôi không làm kiểu giới thiệu lý thuyết suông. Với kinh nghiệm trực tiếp làm việc tại các Chi cục Thuế, chúng tôi chuyên bóc tách dòng tiền phức tạp, giải trình doanh thu sàn Shopee/TikTok/Lazada, gỡ truy thu thuế cho thuê nhà và xử lý tẹt ga sổ sách kế toán của doanh nghiệp vừa và nhỏ.
@@ -602,7 +590,7 @@ export default function App() {
                     </div>
                     <h4 className="font-extrabold text-base text-[#001F3F] mb-1">Hộ kinh doanh cá thể</h4>
                     <p className="text-xs text-gray-600 line-clamp-3 mb-4">
-                      Tối ưu định mức thuế khoán, nộp hồ sơ kế toán Thông tư 88, mở sổ vật liệu sản phẩm, đăng ký thành lập trọn gói nhanh gọn nhất.
+                      Thiết lập phương thức kê khai theo Thông tư 88 từ 1/1/2026, mở 5 loại sổ sách kế toán cốt lõi, đăng ký thành lập trọn gói nhanh gọn nhất.
                     </p>
                     <button 
                       onClick={() => { setActiveTab("services"); setServiceGroupFilter("HKD"); }}
@@ -708,7 +696,7 @@ export default function App() {
                   </h3>
                   <div className="space-y-3.5">
                     {[
-                      { t: "Thực hành thực tế", d: "Chúng tôi đứng trên góc nhìn thực chiến, giải quyết nhanh các tình huống thực tế của khách, không dạy chữ suông lý thuyết." },
+                      { t: "Thực hành thực tế", d: "Chúng tôi đứng trên góc nhìn thực tế, giải quyết nhanh các tình huống thực tế của khách, không dạy chữ suông lý thuyết." },
                       { t: "Kinh nghiệm rà soát dày mặn", d: "Bao năm trực diện xử lý ngân hàng, hóa đơn điện tử, nắm rõ bài toán 'nới biên lỏng chặt' của cơ quan Quản lý Thuế địa phương." },
                       { t: "Sắp xếp hồ sơ cực tốc", d: "Hướng dẫn chuẩn soạn trước tài liệu, giúp quy trình khai báo, lấy hóa đơn lẻ xong nhanh chỉ trong vài ngày làm việc." },
                       { t: "Chi phí minh bạch", d: "Cam kết báo giá trọn gói 1 lần trước khi tiếp nhận vụ việc, tuyệt đối không có phụ phí 'bôi trơn' hay chi phí phát sinh bất hợp lý." }
@@ -751,179 +739,782 @@ export default function App() {
 
           {/* TAB 2: SERVICES SYSTEM */}
           {activeTab === "services" && (
-            <div id="view-tab-services" className="space-y-6">
-              <div className="border-b border-gray-200 pb-2">
-                <h2 className="text-2xl font-black text-[#001F3F] uppercase tracking-wide">
-                  Chi tiết Hệ thống Dịch vụ Thuế Thực Chiến
-                </h2>
-                <p className="text-xs text-gray-500">Tìm kiếm theo phân loại chính xác của loại hình kinh doanh thực tế để lấy quy trình gỡ vướng.</p>
-              </div>
-
-              {/* Group selection tabs */}
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { k: "ALL", l: "Tất cả dịch vụ" },
-                  { k: "HKD", l: "Hộ kinh doanh (Thông tư 88/Khoán)" },
-                  { k: "CNKD", l: "Cá nhân TMĐT/Freelancer" },
-                  { k: "CTTS", l: "Cho thuê nhà/Mặt bằng" },
-                  { k: "DN", l: "Doanh nghiệp (Kế toán trọn gói)" },
-                  { k: "XL", l: "Xử lý vi phạm/Truy thu khẩn cấp" },
-                ].map((item) => (
+            <div id="view-tab-services" className="space-y-6 animate-fadeIn">
+              <div className="border-b border-gray-200 pb-2 flex flex-col md:flex-row justify-between items-start md:items-end gap-3">
+                <div>
+                  <h2 className="text-2xl font-black text-[#001F3F] uppercase tracking-wide">
+                    Hệ Thống Quản Trị & Dịch Vụ Thuế Thực Chiến
+                  </h2>
+                  <p className="text-xs text-gray-500">
+                    Cung cấp lộ trình tuân thủ, tính toán rủi ro và giải pháp thuế trọn gói cho mọi mô hình kinh doanh Việt Nam.
+                  </p>
+                </div>
+                
+                {/* Secondary navigation for Catalog & Lifecycle */}
+                <div className="flex bg-slate-100 p-1 rounded-md border border-gray-200">
                   <button
-                    key={item.k}
-                    onClick={() => setServiceGroupFilter(item.k)}
-                    className={`px-3 py-1.5 rounded text-xs font-bold uppercase transition-all ${
-                      serviceGroupFilter === item.k
-                        ? "bg-[#800020] text-white shadow"
-                        : "bg-gray-100 hover:bg-gray-200 text-[#001F3F]"
+                    onClick={() => setServiceSubView("catalog")}
+                    className={`px-3 py-1.5 text-xs font-bold rounded transition-all uppercase tracking-tight flex items-center gap-1.5 ${
+                      serviceSubView === "catalog"
+                        ? "bg-[#800020] text-white shadow-sm"
+                        : "text-[#001F3F] hover:bg-white"
                     }`}
                   >
-                    {item.l}
+                    💼 Dịch Vụ
                   </button>
-                ))}
+                  <button
+                    onClick={() => setServiceSubView("lifecycle")}
+                    className={`px-3 py-1.5 text-xs font-bold rounded transition-all uppercase tracking-tight flex items-center gap-1.5 relative ${
+                      serviceSubView === "lifecycle"
+                        ? "bg-[#800020] text-white shadow-sm"
+                        : "text-[#001F3F] hover:bg-white"
+                    }`}
+                  >
+                    🔄 Chu Kỳ Pháp Lý & Vòng Đời Thuế
+                    <span className="absolute -top-1.5 -right-1.5 bg-[#001F3F] text-white text-[8px] px-1 py-0.5 rounded font-black scale-90 tracking-tighter uppercase">
+                      Mới
+                    </span>
+                  </button>
+                </div>
               </div>
 
-              {/* Service list and Detail Panel split */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
+              {/* INTERACTIVE COMPREHENSIVE ONBOARDING ROADMAP SELECTOR FOR BEGINNERS */}
+              <div className="bg-slate-50 border border-gray-200 rounded-lg p-5 space-y-4 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200 pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#800020] text-white text-xs font-black">?</span>
+                    <h3 className="text-sm font-black text-[#001F3F] uppercase tracking-wider">
+                      Bạn thuộc nhóm Kinh doanh hoặc có nhu cầu nào dưới đây?
+                    </h3>
+                  </div>
+                </div>
                 
-                {/* Scrollable list on left */}
-                <div className="lg:col-span-4 space-y-2 max-h-[500px] overflow-y-auto pr-2">
-                  {SERVICES_DATA.filter(s => serviceGroupFilter === "ALL" || s.group === serviceGroupFilter).map((s) => (
-                    <div
-                      key={s.id}
-                      onClick={() => setSelectedService(s)}
-                      className={`p-3 rounded border text-left cursor-pointer transition-all ${
-                        selectedService?.id === s.id
-                          ? "border-[#800020] bg-red-50/50"
-                          : "border-gray-200 hover:border-gray-400 bg-white"
-                      }`}
-                    >
-                      <h4 className="font-extrabold text-xs text-[#001F3F] mb-1 leading-snug">{s.title}</h4>
-                      <p className="text-[10.5px] text-gray-500 line-clamp-2 leading-relaxed">{s.shortDesc}</p>
-                      <span className="inline-block text-[9.5px] uppercase font-bold text-[#800020] mt-1.5 tracking-wider bg-gray-100 p-1 rounded">
-                        {s.group === "HKD" && "Hộ kinh doanh"}
-                        {s.group === "CNKD" && "Cá nhân TMĐT"}
-                        {s.group === "CTTS" && "Cho thuê nhà"}
-                        {s.group === "DN" && "Doanh nghiệp"}
-                        {s.group === "XL" && "Giải trình khẩn cấp"}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Selected Service Detailed Board on right */}
-                <div className="lg:col-span-8 bg-slate-50 border border-gray-200 p-6 rounded-lg space-y-4">
-                  {selectedService ? (
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-start gap-2 border-b border-gray-250 pb-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+                  {[
+                    {
+                      id: "HKD",
+                      label: "Hộ Kinh Doanh Cá Thể",
+                      subtitle: "Ăn uống, sỉ/lẻ, dịch vụ",
+                      desc: "Kê khai theo Thông tư 88 (phương pháp thuế khoán đã bãi bỏ từ 1/1/2026). Đầy đủ 5 loại sổ sách kế toán cốt lõi.",
+                      tag: "Phổ biến",
+                      color: "border-amber-200 bg-amber-50/20 hover:bg-amber-50/40",
+                      badgeColor: "bg-amber-600",
+                      action: () => {
+                        setServiceGroupFilter("HKD");
+                        setLifecycleEntity("hkd");
+                        setServiceSubView("catalog");
+                        const previewEl = document.getElementById("services-catalog-focus");
+                        if (previewEl) previewEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                    },
+                    {
+                      id: "CNKD",
+                      label: "Shop Online / Sàn TMĐT",
+                      subtitle: "TikTok, Shopee, Affiliate",
+                      desc: "Tự động tối ưu hóa đơn, rà soát đối soát thuế sàn TMĐT, Freelancer.",
+                      tag: "TMĐT - HOT",
+                      color: "border-blue-200 bg-blue-50/20 hover:bg-blue-50/40",
+                      badgeColor: "bg-blue-600",
+                      action: () => {
+                        setServiceGroupFilter("CNKD");
+                        setLifecycleEntity("hkd");
+                        setServiceSubView("catalog");
+                        const previewEl = document.getElementById("services-catalog-focus");
+                        if (previewEl) previewEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                    },
+                    {
+                      id: "CTTS",
+                      label: "Cho Thuê Nhà / Đất",
+                      subtitle: "Căn hộ, mặt bằng, kho bãi",
+                      desc: "Khai thuế tài sản cho thuê khi đạt DT từ 200 triệu VNĐ/năm trở lên.",
+                      tag: "Thuế Tài Sản",
+                      color: "border-emerald-200 bg-emerald-50/20 hover:bg-emerald-50/40",
+                      badgeColor: "bg-emerald-600",
+                      action: () => {
+                        setServiceGroupFilter("CTTS");
+                        setLifecycleEntity("hkd");
+                        setServiceSubView("catalog");
+                        const previewEl = document.getElementById("services-catalog-focus");
+                        if (previewEl) previewEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                    },
+                    {
+                      id: "DN",
+                      label: "Doanh Nghiệp / Công Ty",
+                      subtitle: "TNHH, Cổ Phần, Khởi Nghiệp",
+                      desc: "Bộ máy Kế toán trọn gói, quyết toán tài chính, đóng BHXH & lao động.",
+                      tag: "Đối Tác Lớn",
+                      color: "border-purple-200 bg-purple-50/20 hover:bg-purple-50/40",
+                      badgeColor: "bg-purple-600",
+                      action: () => {
+                        setServiceGroupFilter("DN");
+                        setLifecycleEntity("dn");
+                        setServiceSubView("lifecycle"); // Toggle to lifecycle for companies!
+                        const previewEl = document.getElementById("services-catalog-focus");
+                        if (previewEl) previewEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                    },
+                    {
+                      id: "XL",
+                      label: "Gỡ Rối / Truy Thu Gấp",
+                      subtitle: "Thanh tra, phạt nộp chậm",
+                      desc: "Hỗ trợ làm việc, giải trình, gỡ vướng trực tiếp cơ quan thuế tại địa bàn.",
+                      tag: "Cứu Hộ Khẩn",
+                      color: "border-rose-200 bg-rose-50/20 hover:bg-rose-50/40",
+                      badgeColor: "bg-rose-600",
+                      action: () => {
+                        setServiceGroupFilter("XL");
+                        setLifecycleEntity("dn");
+                        setServiceSubView("catalog");
+                        const previewEl = document.getElementById("services-catalog-focus");
+                        if (previewEl) previewEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }
+                  ].map((role) => {
+                    const isSelected = 
+                      (role.id === "HKD" && serviceGroupFilter === "HKD") ||
+                      (role.id === "CNKD" && serviceGroupFilter === "CNKD") ||
+                      (role.id === "CTTS" && serviceGroupFilter === "CTTS") ||
+                      (role.id === "DN" && serviceGroupFilter === "DN") ||
+                      (role.id === "XL" && serviceGroupFilter === "XL");
+                      
+                    return (
+                      <div
+                        key={role.id}
+                        onClick={role.action}
+                        className={`p-3.5 border-2 rounded-lg text-left cursor-pointer transition-all duration-200 relative group flex flex-col justify-between ${
+                          isSelected 
+                            ? "border-[#800020] bg-[#800020]/5 scale-102 shadow-md" 
+                            : "border-gray-200 bg-white"
+                        } ${role.color}`}
+                      >
                         <div>
-                          <span className="text-[11px] font-extrabold text-[#800020] tracking-widest uppercase">
-                            DỊCH VỤ THUẾ CHUYÊN SÂU
+                          <span className={`absolute -top-2.5 right-2 text-[8px] font-black uppercase text-white px-1.5 py-0.5 rounded tracking-widest ${role.badgeColor}`}>
+                            {role.tag}
                           </span>
-                          <h3 className="text-xl font-black text-[#001F3F] mt-1">{selectedService.title}</h3>
+                          
+                          <div className="font-extrabold text-[12px] text-[#001F3F] leading-snug group-hover:text-[#800020] transition-colors">{role.label}</div>
+                          <div className="text-[10px] text-gray-500 font-bold mt-0.5">{role.subtitle}</div>
+                          <div className="text-[10.5px] mt-2 text-gray-600 leading-snug font-normal line-clamp-3">
+                            {role.desc}
+                          </div>
                         </div>
-                        <span className="bg-[#001F3F] text-white text-[11px] font-mono px-2 py-1 rounded shrink-0">
-                          {selectedService.duration}
-                        </span>
-                      </div>
-
-                      <div className="space-y-1">
-                        <span className="text-[11px] font-extrabold text-[#001F3F] uppercase tracking-wide flex items-center gap-1">
-                          <CheckCircle2 size={13} className="text-[#800020]" />
-                          Đối tượng áp dụng thực tế:
-                        </span>
-                        <p className="text-xs text-gray-700 font-mono italic pl-4 bg-white p-2 rounded border border-gray-200">
-                          {selectedService.targetUser}
-                        </p>
-                      </div>
-
-                      {/* Documents needed checklist */}
-                      <div className="space-y-2">
-                        <span className="text-[11px] font-extrabold text-[#001F3F] uppercase tracking-wide block">
-                          Những hồ sơ quý khách cần chuẩn bị trước:
-                        </span>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pl-2">
-                          {selectedService.documentsNeeded.map((doc, idx) => (
-                            <div key={idx} className="bg-white p-2 rounded border border-gray-150 text-xs flex items-start gap-1.5">
-                              <span className="bg-[#800020] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5">{idx + 1}</span>
-                              <span className="text-gray-600 leading-normal">{doc}</span>
-                            </div>
-                          ))}
+                        
+                        <div className="mt-3 text-[9px] font-black text-[#800020] flex items-center justify-between uppercase tracking-wider border-t border-gray-100 pt-2">
+                          <span>Khai thác ngay</span>
+                          <ChevronRight size={10} className="transform group-hover:translate-x-1 transition-transform" />
                         </div>
                       </div>
-
-                      {/* Step process flow */}
-                      <div className="space-y-2">
-                        <span className="text-[11px] font-extrabold text-[#001F3F] uppercase tracking-wide block">
-                          Quy trình xử lý thực chiến tại Đại lý Thuế Thành Phố:
-                        </span>
-                        <div className="space-y-1.5 pl-4 border-l-2 border-[#800020]">
-                          {selectedService.processSteps.map((step, sIdx) => (
-                            <div key={sIdx} className="relative pl-2 text-xs">
-                              <div className="font-extrabold text-[#001F3F]">{step.split(":")[0]}:</div>
-                              <div className="text-gray-600">{step.split(":")[1]}</div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* FAQs for this service */}
-                      <div className="bg-white p-4 rounded border border-gray-200 space-y-2">
-                        <span className="text-[11px] font-extrabold text-[#800020] uppercase tracking-wide flex items-center gap-1">
-                          <HelpCircle size={14} />
-                          Câu hỏi hay gặp nhất về dịch vụ này:
-                        </span>
-                        <div className="space-y-3 split-divided">
-                          {selectedService.faq.map((fq, fidx) => (
-                            <div key={fidx} className="space-y-1 text-xs">
-                              <div className="font-extrabold text-slate-800">Q: {fq.q}</div>
-                              <div className="text-gray-600 bg-slate-50 p-2.5 rounded border-l-2 border-slate-300 italic">A: {fq.a}</div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Quick CTA to push lead form */}
-                      <div className="pt-2 flex flex-col sm:flex-row justify-between items-center bg-red-50 p-3 rounded border border-red-200 gap-3">
-                        <div className="text-center sm:text-left">
-                          <div className="text-xs font-bold text-slate-800">Quý khách đang nằm trong diện cần xử lý trường hợp này gấp?</div>
-                          <div className="text-[10px] text-gray-500">Được tư vấn chi tiết miễn phí và soạn sẵn tờ khai chỉ trong 15 phút.</div>
-                        </div>
-                        <button
-                          onClick={() => {
-                            setLeadForm(prev => ({
-                              ...prev,
-                              problem: `Cần tư vấn sâu cho dịch vụ: "${selectedService.title}"`
-                            }));
-                            const scrollTarget = document.getElementById("lead-form-scroll-target");
-                            if (scrollTarget) scrollTarget.scrollIntoView({ behavior: "smooth" });
-                          }}
-                          className="bg-[#800020] hover:bg-neutral-900 text-white text-xs font-bold px-4 py-2.5 rounded shrink-0 uppercase tracking-wider"
-                        >
-                          Cần gửi hồ sơ tư vấn dịch vụ này
-                        </button>
-                      </div>
-
-                    </div>
-                  ) : (
-                    <div className="text-center py-12 text-gray-400">
-                      Chọn một dịch vụ cụ thể bên trái để theo dõi chi tiết quy trình nộp thuế và hồ sơ chuẩn bị.
-                    </div>
-                  )}
+                    );
+                  })}
                 </div>
-
               </div>
+
+              <div id="services-catalog-focus" className="scroll-mt-6"></div>
+
+              {/* VIEW 2.1: INTERACTIVE SERVICES CATALOG */}
+              {serviceSubView === "catalog" && (
+                <div className="space-y-6">
+                  {/* Group selection tabs */}
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { k: "ALL", l: "Tất cả dịch vụ" },
+                      { k: "HKD", l: "Hộ kinh doanh (Kê khai Thông tư 88)" },
+                      { k: "CNKD", l: "Cá nhân TMĐT/Freelancer" },
+                      { k: "CTTS", l: "Cho thuê nhà/Mặt bằng" },
+                      { k: "DN", l: "Doanh nghiệp (Kế toán trọn gói)" },
+                      { k: "XL", l: "Xử lý vi phạm/Truy thu khẩn cấp" },
+                    ].map((item) => (
+                      <button
+                        key={item.k}
+                        onClick={() => setServiceGroupFilter(item.k)}
+                        className={`px-3 py-1.5 rounded text-xs font-bold uppercase transition-all ${
+                          serviceGroupFilter === item.k
+                            ? "bg-[#800020] text-white shadow"
+                            : "bg-gray-100 hover:bg-gray-200 text-[#001F3F]"
+                        }`}
+                      >
+                        {item.l}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Service list and Detail Panel split */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
+                    
+                    {/* Scrollable list on left */}
+                    <div className="lg:col-span-4 space-y-2 max-h-[500px] overflow-y-auto pr-2">
+                      {SERVICES_DATA.filter(s => serviceGroupFilter === "ALL" || s.group === serviceGroupFilter).map((s) => (
+                        <div
+                          key={s.id}
+                          onClick={() => setSelectedService(s)}
+                          className={`p-3 rounded border text-left cursor-pointer transition-all ${
+                            selectedService?.id === s.id
+                              ? "border-[#800020] bg-red-50/50"
+                              : "border-gray-200 hover:border-gray-400 bg-white"
+                          }`}
+                        >
+                          <h4 className="font-extrabold text-xs text-[#001F3F] mb-1 leading-snug">{s.title}</h4>
+                          <p className="text-[10.5px] text-gray-500 line-clamp-2 leading-relaxed">{s.shortDesc}</p>
+                          <span className="inline-block text-[9.5px] uppercase font-bold text-[#800020] mt-1.5 tracking-wider bg-gray-100 p-1 rounded">
+                            {s.group === "HKD" && "Hộ kinh doanh"}
+                            {s.group === "CNKD" && "Cá nhân TMĐT"}
+                            {s.group === "CTTS" && "Cho thuê nhà"}
+                            {s.group === "DN" && "Doanh nghiệp"}
+                            {s.group === "XL" && "Giải trình khẩn cấp"}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Selected Service Detailed Board on right */}
+                    <div className="lg:col-span-8 bg-slate-50 border border-gray-200 p-6 rounded-lg space-y-4 animate-fadeIn">
+                      {selectedService ? (
+                        <div className="space-y-4">
+                          <div className="flex justify-between items-start gap-2 border-b border-gray-250 pb-3">
+                            <div>
+                              <span className="text-[11px] font-extrabold text-[#800020] tracking-widest uppercase">
+                                DỊCH VỤ THUẾ CHUYÊN SÂU
+                              </span>
+                              <h3 className="text-xl font-black text-[#001F3F] mt-1">{selectedService.title}</h3>
+                            </div>
+                            <span className="bg-[#001F3F] text-white text-[11px] font-mono px-2 py-1 rounded shrink-0">
+                              {selectedService.duration}
+                            </span>
+                          </div>
+
+                          <div className="space-y-1">
+                            <span className="text-[11px] font-extrabold text-[#001F3F] uppercase tracking-wide flex items-center gap-1">
+                              <CheckCircle2 size={13} className="text-[#800020]" />
+                              Đối tượng áp dụng thực tế:
+                            </span>
+                            <p className="text-xs text-gray-700 font-mono italic pl-4 bg-white p-2 rounded border border-gray-200">
+                              {selectedService.targetUser}
+                            </p>
+                          </div>
+
+                          {/* Documents needed checklist */}
+                          <div className="space-y-2">
+                            <span className="text-[11px] font-extrabold text-[#001F3F] uppercase tracking-wide block">
+                              Những hồ sơ quý khách cần chuẩn bị trước:
+                            </span>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pl-2">
+                              {selectedService.documentsNeeded.map((doc, idx) => (
+                                <div key={idx} className="bg-white p-2 rounded border border-gray-150 text-xs flex items-start gap-1.5">
+                                  <span className="bg-[#800020] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5">{idx + 1}</span>
+                                  <span className="text-gray-600 leading-normal">{doc}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Step process flow */}
+                          <div className="space-y-2">
+                            <span className="text-[11px] font-extrabold text-[#001F3F] uppercase tracking-wide block">
+                              Quy trình xử lý tại Đại lý Thuế Thành Phố:
+                            </span>
+                            <div className="space-y-1.5 pl-4 border-l-2 border-[#800020]">
+                              {selectedService.processSteps.map((step, sIdx) => (
+                                <div key={sIdx} className="relative pl-2 text-xs">
+                                  <div className="font-extrabold text-[#001F3F]">{step.split(":")[0]}:</div>
+                                  <div className="text-gray-600">{step.split(":")[1]}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* FAQs for this service */}
+                          <div className="bg-white p-4 rounded border border-gray-200 space-y-2">
+                            <span className="text-[11px] font-extrabold text-[#800020] uppercase tracking-wide flex items-center gap-1">
+                              <HelpCircle size={14} />
+                              Câu hỏi hay gặp nhất về dịch vụ này:
+                            </span>
+                            <div className="space-y-3 split-divided">
+                              {selectedService.faq.map((fq, fidx) => (
+                                <div key={fidx} className="space-y-1 text-xs">
+                                  <div className="font-extrabold text-slate-800">Q: {fq.q}</div>
+                                  <div className="text-gray-600 bg-slate-50 p-2.5 rounded border-l-2 border-slate-300 italic">A: {fq.a}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Quick CTA to push lead form */}
+                          <div className="pt-2 flex flex-col sm:flex-row justify-between items-center bg-red-50 p-3 rounded border border-red-200 gap-3">
+                            <div className="text-center sm:text-left">
+                              <div className="text-xs font-bold text-slate-800">Quý khách đang nằm trong diện cần xử lý trường hợp này gấp?</div>
+                              <div className="text-[10px] text-gray-500">Được tư vấn chi tiết miễn phí và soạn sẵn tờ khai chỉ trong 15 phút.</div>
+                            </div>
+                            <button
+                              onClick={() => {
+                                setLeadForm(prev => ({
+                                  ...prev,
+                                  problem: `Cần tư vấn sâu cho dịch vụ: "${selectedService.title}"`
+                                }));
+                                const scrollTarget = document.getElementById("lead-form-scroll-target");
+                                if (scrollTarget) scrollTarget.scrollIntoView({ behavior: "smooth" });
+                              }}
+                              className="bg-[#800020] hover:bg-neutral-900 text-white text-xs font-bold px-4 py-2.5 rounded shrink-0 uppercase tracking-wider"
+                            >
+                              Cần gửi hồ sơ tư vấn dịch vụ này
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-center py-12 text-gray-400">
+                          Chọn một dịch vụ cụ thể bên trái để theo dõi chi tiết quy trình nộp thuế và hồ sơ chuẩn bị.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* VIEW 2.2: COMPLEX INTERACTIVE LIFECYCLE COMPLIANCE ROADSAP */}
+              {serviceSubView === "lifecycle" && (
+                <div className="space-y-6 animate-fadeIn">
+                  
+                  {/* Entity Type Toggle Selector - International Executive layout */}
+                  <div className="bg-[#001F3F] text-white rounded-lg p-5 flex flex-col md:flex-row justify-between items-center gap-4 shadow">
+                    <div>
+                      <h4 className="text-sm font-bold tracking-wider text-rose-300 uppercase flex items-center gap-2">
+                        <Sparkles size={14} className="animate-pulse" />
+                        TRÌNH TRA CỨU QUY TRÌNH PHÁP LÝ VIỆT NAM
+                      </h4>
+                      <h3 className="text-lg font-black mt-1">Chu Kỳ Vòng Đời Tuân Thủ Pháp Luật Thuế, Kế Toán & BHXH</h3>
+                      <p className="text-[11px] text-gray-300 mt-0.5">Xác định chuẩn xác lộ trình các nghĩa vụ bắt buộc từ khi khởi sự đến khi vận hành ổn định và chấm dứt.</p>
+                    </div>
+
+                    <div className="flex bg-white/10 p-1 rounded-md shrink-0 border border-white/10">
+                      <button
+                        onClick={() => setLifecycleEntity("hkd")}
+                        className={`px-4 py-2 text-xs font-black uppercase rounded transition-all flex items-center gap-1.5 ${
+                          lifecycleEntity === "hkd"
+                            ? "bg-white text-[#001F3F] shadow-sm"
+                            : "text-white hover:bg-white/10"
+                        }`}
+                      >
+                        🏠 Hộ / Cá Nhân Kinh Doanh
+                      </button>
+                      <button
+                        onClick={() => setLifecycleEntity("dn")}
+                        className={`px-4 py-2 text-xs font-black uppercase rounded transition-all flex items-center gap-1.5 ${
+                          lifecycleEntity === "dn"
+                            ? "bg-white text-[#001F3F] shadow-sm"
+                            : "text-white hover:bg-white/10"
+                        }`}
+                      >
+                        🏢 Doanh Nghiệp / Công Ty
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Summary card with stats */}
+                  <div className="bg-slate-50 border-l-4 border-[#800020] p-4 rounded-r-lg grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div className="space-y-1">
+                      <div className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Cơ sở pháp lý nền tảng:</div>
+                      <div className="font-extrabold text-[#001F3F]">
+                        {lifecycleEntity === "hkd" 
+                          ? "Nghị định 141/2026/NĐ-CP, Thông tư 152/2025/TT-BTC, Thông tư 40/2021/TT-BTC & Thông tư 88/2021/TT-BTC" 
+                          : "Luật Doanh nghiệp 2020, Thông tư 200 & 133/BTC, Luật BHXH, Bộ luật Lao động 2019"}
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Chế độ kế toán & Lưu trữ:</div>
+                      <div className="font-extrabold text-[#001F3F]">
+                        {lifecycleEntity === "hkd" 
+                          ? "Chỉ áp dụng 5 loại sổ kế toán bắt buộc (TT 88). Không cần lập Báo cáo tài chính." 
+                          : "Áp dụng Kế toán trưởng, phần mềm kế toán, Lập Báo cáo tài chính (BCTC) nộp Sở KHĐT/Cục Thuế."}
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Bảo hiểm xã hội & Lao động:</div>
+                      <div className="font-extrabold text-[#001F3F]">
+                        {lifecycleEntity === "hkd" 
+                          ? "Bắt buộc tham gia cho nhân sự có hợp đồng lao động ≥ 1 tháng. Chủ hộ đóng tự nguyện." 
+                          : "Bắt buộc đóng BHXH 32% quỹ lương đóng bảo hiểm (DN: 21.5%, NLĐ: 10.5%). Nộp kinh phí công đoàn 2%."}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CHRONOLOGICAL TIMELINE CHU KỲ (5 PHASES) */}
+                  <div className="space-y-6 relative pl-4 md:pl-0">
+                    
+                    {/* Vertical line helper for mobile */}
+                    <div className="absolute left-1.5 top-2 bottom-2 w-0.5 bg-gray-200 md:hidden"></div>
+
+                    {[
+                      {
+                        phase: "GIAI ĐOẠN 1",
+                        title: "PHÁP LÝ THÀNH LẬP & PHÁT TRÌNH BAN ĐẦU",
+                        desc: "Các thủ tục đăng ký giấy phép hoạt động kinh doanh hợp pháp và đảm bảo tính hiệu lực pháp nhân với các cơ quan quản lý.",
+                        hkd: [
+                          {
+                            title: "Đăng ký Giấy chứng nhận Đăng ký Hộ kinh doanh liên thông đăng ký thuế",
+                            body: "Theo Nghị định 141/2026/NĐ-CP, nộp hồ sơ trực tuyến liên thông ĐKKD và đăng ký thuế tại Cổng thông tin quốc gia về đăng ký doanh nghiệp/hợp tác xã/hộ kinh doanh để nhận mã số thuế và mã số kinh doanh đồng hành tự động.",
+                            time: "1 - 3 ngày làm việc",
+                            penalty: "MIỄN 100% lệ phí đăng ký theo Thông tư 152/2025/TT-BTC khi nộp qua mạng. Nộp trực tiếp là 100.000 đồng."
+                          },
+                          {
+                            title: "Cấp Giấy chứng nhận đăng ký hộ kinh doanh dưới dạng điện tử",
+                            body: "Hộ kinh doanh có thể tải trực tiếp bản điện tử có đầy đủ chữ ký số và mã QR xác thực để giao dịch ngay lập tức với ngân hàng, đối tác và xuất hóa đơn.",
+                            time: "Cùng ngày phê duyệt",
+                            penalty: "Quy trình số hóa giúp giảm thiểu tối đa việc lưu trữ bản giấy truyền thống."
+                          },
+                          {
+                            title: "Quy luật sử dụng lao động tối đa",
+                            body: "Nghị định 141/2026/NĐ-CP và Nghị định 01/2021/NĐ-CP bãi bỏ hoàn toàn giới hạn 10 lao động. Hộ kinh doanh được tự do sử dụng số lượng lao động không giới hạn.",
+                            time: "Hiệu lực lập tức",
+                            penalty: "Lưu ý ký kết hợp đồng đầy đủ đúng luật lao động Việt Nam để tránh tranh chấp dân sự."
+                          }
+                        ],
+                        dn: [
+                          {
+                            title: "Đăng ký cấp Giấy chứng nhận Đăng ký Doanh nghiệp (GPKD)",
+                            body: "Nộp hồ sơ đăng ký thành lập (Công ty TNHH 1 TV, 2 TV, Cổ phần) trên Cổng Thông tin Quốc gia về Đăng ký Doanh nghiệp thuộc Sở Kế hoạch và Đầu tư.",
+                            time: "3 - 5 ngày làm việc",
+                            penalty: "Phạt từ 10M - 20M nếu đi vào kinh doanh mà chưa hoàn thiện Giấy chứng nhận."
+                          },
+                          {
+                            title: "Khắc con dấu Công ty & Công bố thông tin pháp nhân",
+                            body: "Theo Luật Doanh nghiệp 2020, doanh nghiệp tự chịu trách nhiệm quyết định số lượng, hình thức và nội dung con dấu mà không cần thông báo mẫu dấu lên Sở KH&ĐT.",
+                            time: "Trong vòng 1-2 ngày",
+                            penalty: "Đảm bảo quản lý con dấu chặt chẽ tránh rủi ro pháp lý ngoài ý muốn."
+                          },
+                          {
+                            title: "Đăng ký tài khoản Thuế Điện Tử (eTax - thuedientu.gdt.gov.vn)",
+                            body: "Tạo tài khoản chữ ký số và đồng bộ cổng thông tin thuế để phục vụ nộp hồ sơ, tờ khai điện tử sau này.",
+                            time: "Cùng thời điểm có GPKD",
+                            penalty: "Bắt buộc để liên kết nộp ngân sách nhà nước trực tuyến an toàn."
+                          }
+                        ]
+                      },
+                      {
+                        phase: "GIAI ĐOẠN 2",
+                        title: "THIẾT LẬP THUẾ BAN ĐẦU (ÁP DỤNG TRONG 30 NGÀY ĐẦU)",
+                        desc: "Những bước khai báo ban đầu để cơ quan quản lý thuế đưa cơ sở kinh doanh vào diện giám sát quản lý hoạt động.",
+                        hkd: [
+                          {
+                            title: "Lựa chọn phương pháp tính thuế thích hợp",
+                            body: "Bắt buộc chuyển đổi sang phương pháp Kê khai theo Thông tư 88 từ ngày 01/01/2026 cho toàn bộ hộ kinh doanh (phương pháp Thuế Khoán đã chính thức bãi bỏ).",
+                            time: "Hạn chót 30 ngày",
+                            penalty: "Hộ kinh doanh TMĐT mới phát sinh phải chủ động kê khai để tránh bị phạt tội trốn thuế."
+                          },
+                          {
+                            title: "Treo biển hiệu tại địa chỉ ĐKKD",
+                            body: "Bắt buộc phải treo biển hiệu có ghi tên hộ kinh doanh, mã số thuế, số điện thoại để cơ quan quản lý xác minh.",
+                            time: "Ngay sau khi thành lập",
+                            penalty: "Chi cục thuế đi kiểm tra thực tế nếu không treo biển hiệu hoặc không hoạt động tại địa chỉ đăng ký sẽ bị khoá mã số thuế."
+                          },
+                          {
+                            title: "Mua Chữ ký số (Token/SmartCA) & Đăng ký sử dụng Hóa đơn điện tử",
+                            body: "Đăng ký hóa đơn điện tử có mã của cơ quan thuế theo Nghị định 123/2020/NĐ-CP (Áp dụng đối với hộ nộp thuế kê khai).",
+                            time: "Trong vòng 30 ngày đầu",
+                            penalty: "Sử dụng sai quy cách hoá đơn điện tử bị phạt hành chính từ 3 triệu đến 8 triệu đồng."
+                          }
+                        ],
+                        dn: [
+                          {
+                            title: "Bắt buộc treo biển hiệu và mở văn phòng thực tế",
+                            body: "Tránh trường hợp Cơ quan thuế gửi cán bộ kiểm tra xác minh địa điểm hoạt động kinh doanh trực tiếp tại trụ sở đăng ký.",
+                            time: "Trong vòng 10 ngày đầu",
+                            penalty: "Không treo biển hiệu sẽ lập tức bị cơ sở thuế khóa mã số thuế diện 'Người nộp thuế không hoạt động tại địa chỉ đã đăng ký', ảnh hưởng cực nghiêm trọng đến hoạt động."
+                          },
+                          {
+                            title: "Nộp tờ khai lệ phí Môn Bài lần đầu",
+                            body: "Nộp tờ khai lệ phí môn bài. Theo quy định tại Nghị định 22/2020/NĐ-CP, Doanh nghiệp thành lập mới được MIỄN lệ phí môn bài trong năm đầu tiên. Nhưng vẫn phải nộp tờ khai môn bài muộn nhất trước ngày 30/01 năm kế tiếp thành lập.",
+                            time: "Trước 30/1 năm kế tiếp",
+                            penalty: "Lệ phí môn bài: Vốn điều lệ > 10 tỷ nộp 3.000.000đ/năm; Vốn điều lệ <= 10 tỷ nộp 2.000.000đ/năm. Không khai nộp tờ khai phạt từ 2 triệu đến 5 triệu đồng."
+                          },
+                          {
+                            title: "Thông báo phát hành hóa đơn điện tử trực tuyến",
+                            body: "Soạn và gửi hồ sơ đăng ký hóa đơn điện tử sử dụng mẫu Đăng ký (Mẫu 01/ĐKTĐ-HĐĐT ban hành kèm Nghị định 123) nộp cơ quan thuế duyệt.",
+                            time: "Trước khi xuất hóa đơn đầu tiên",
+                            penalty: "Sử dụng hóa đơn bất hợp pháp hoặc xuất hóa đơn trước khi được duyệt phát hành bị xử phạt từ 20 triệu đến 50 triệu đồng."
+                          }
+                        ]
+                      },
+                      {
+                        phase: "GIAI ĐOẠN 3",
+                        title: "VẬN HÀNH ĐỊNH KỲ THƯỜNG NYÊN (KẾ TOÁN & THUẾ VÀO NỀN NẾP)",
+                        desc: "Công việc hằng tháng, quý và năm của doanh nghiệp/hộ kinh doanh để tuân thủ luật và báo cáo chính sách dòng tiền.",
+                        hkd: [
+                          {
+                            title: "Thực hiện hệ thống sổ sách kế toán (Đối với Hộ Kê Khai)",
+                            body: "Theo Thông tư 88/2021/TT-BTC, Hộ kê khai bắt buộc phải ghi chép đầy đủ 5 sổ kế toán chính: 1. Sổ chi tiết doanh thu bán hàng hóa dịch vụ; 2. Sổ chi tiết vật liệu, dụng cụ, sản phẩm, hàng hóa; 3. Sổ chi phí sản xuất, kinh doanh; 4. Sổ theo dõi tình hình thực hiện nghĩa vụ thuế với NSNN; 5. Sổ theo dõi thanh toán tiền lương và các khoản nộp theo lương.",
+                            time: "Cập nhật hàng ngày/tháng",
+                            penalty: "Không lập sổ sách hoặc lập sổ sách không đúng biểu mẫu quy định bị xử phạt kiểm tra từ 2 triệu đến 5 triệu đồng."
+                          },
+                          {
+                            title: "Khai nộp thuế GTGT & TNCN hàng quý",
+                            body: "Sử dụng Tờ khai 01/CNKD. Nộp chậm nhất vào ngày cuối cùng của tháng đầu tiên thuộc quý tiếp theo.",
+                            time: "Trước ngày 30/4, 31/7, 31/10, 31/1 năm kế tiếp",
+                            penalty: "Tỷ lệ thuế suất: Kinh doanh TMĐT, TikTok, Shopee là 1.5% tổng doanh thu. Bán hàng phân phối đại lý là 1.5%. Dịch vụ là 7%. Sản xuất là 4.5%."
+                          }
+                        ],
+                        dn: [
+                          {
+                            title: "Chuẩn bị hệ thống sổ sách kế toán & Quyết định chọn Chế độ",
+                            body: "Áp dụng Thông tư 133 (doanh nghiệp vừa và nhỏ) hoặc Thông tư 200 (doanh nghiệp lớn). Bắt buộc phải tổ chức bộ máy kế toán, ghi chép chứng từ phát sinh thực tế hàng ngày.",
+                            time: "Liên tục suốt năm tài chính",
+                            penalty: "Hạch toán sai bản chất chi phí gây sai lệch nghĩa vụ thuế sẽ bị truy thu 20% số thuế thiếu và phạt chậm nộp 0.03%/ngày."
+                          },
+                          {
+                            title: "Khai báo và tạm nộp thuế hàng Quý",
+                            body: "1. Khai thuế Giá trị gia tăng (GTGT) hàng quý (nếu DT từ 50 tỷ trở xuống). 2. Khai thuế TNCN tạm nộp nếu có khấu trừ nhân viên trong quý. 3. Tạm tính và nộp số thuế Thu nhập doanh nghiệp (TNDN) tạm tính phát sinh quý (Thuế suất phổ thông 20%). Không cần nộp tờ khai TNDN quý mà chỉ tạm nộp tiền vào NSNN.",
+                            time: "Muộn nhất ngày thứ 30 của quý tiếp theo",
+                            penalty: "Tổng số thuế TNDN đã tạm nộp của 4 quý không được thấp hơn 80% số thuế TNDN quyết toán năm. Nếu thấp hơn sẽ bị phạt tính tiền chậm nộp 0.03%/ngày cho số chênh lệch thiếu."
+                          },
+                          {
+                            title: "Lập Báo cáo tài chính (BCTC) & Quyết toán thuế cuối năm",
+                            body: "Báo cáo thường niên bắt buộc gồm: Báo cáo tài chính cuối năm, Quyết toán thuế Thu nhập doanh nghiệp (Mẫu 03/TNDN), Quyết toán thuế TNCN (Mẫu 05/QTT-TNCN). Nộp hồ sơ qua hệ thống thuế thuedientu.",
+                            time: "Trong vòng 90 ngày sau kết thúc năm (Hạn chót 31/03)",
+                            penalty: "Nộp chậm BCTC và Quyết toán năm bị xử phạt lũy tiến cực nặng từ 5 triệu đến 25 triệu đồng tuỳ số ngày chậm nộp."
+                          }
+                        ]
+                      },
+                      {
+                        phase: "GIAI ĐOẠN 4",
+                        title: "CHẾ ĐỘ LAO ĐỘNG & BẢO HIỂM XÃ HỘI (QUYỀN LỢI NHÂN SỰ)",
+                        desc: "Nghĩa vụ xã hội tối quan trọng liên quan đến BHXH, BHYT, Bảo hiểm thất nghiệp và quản lý tiền lương lao động thực tế.",
+                        hkd: [
+                          {
+                            title: "Bắt buộc ký lao động và đóng BHXH cho nhân viên",
+                            body: "Theo Luật Bảo hiểm xã hội Việt Nam, hộ kinh doanh có hành vi ký HĐLĐ bằng văn bản từ 1 tháng trở lên cho nhân sự bắt buộc phải lập hồ sơ đóng BHXH bắt buộc cho người lao động.",
+                            time: "Trong vòng 30 ngày từ ngày ký HĐLĐ",
+                            penalty: "Hành vi trốn đóng, chậm đóng BHXH bị phạt 12% đến 15% tổng số tiền bảo hiểm bắt buộc chưa đóng (nhưng không quá 75 triệu đồng) và bị buộc nộp đủ tiền chậm đóng với lãi suất phạt."
+                          },
+                          {
+                            title: "Khấu trừ và đóng nộp hàng tháng",
+                            body: "Tổng tỷ lệ đóng đóng Bảo hiểm là 32% (Chủ hộ kinh doanh đóng 21.5% trích quỹ chi phí; Người lao động tự chịu 10.5% khấu trực tiếp từ tiền lương cơ bản).",
+                            time: "Nộp trước ngày cuối cùng mỗi tháng",
+                            penalty: "Chủ hộ kinh doanh không thuộc đối tượng tham gia BHXH bắt buộc của chính mình, nhưng khuyến khích tham gia BHXH tự nguyện để an sinh."
+                          }
+                        ],
+                        dn: [
+                          {
+                            title: "Khai trình sử dụng lao động ban đầu",
+                            body: "Trong thời hạn 30 ngày kể từ ngày bắt đầu hoạt động, người sử dụng lao động của doanh nghiệp phải khai trình việc sử dụng lao động với Phòng LĐ-TB&XH quản lý.",
+                            time: "30 ngày tối đa",
+                            penalty: "Báo cáo tình hình sử dụng lao động định kỳ 6 tháng một lần (trước ngày 5/6 và trước ngày 5/12 hàng năm)."
+                          },
+                          {
+                            title: "Thiết lập Thang lương, Bảng lương doanh nghiệp",
+                            body: "Doanh nghiệp tự xây dựng thang lương, bảng lương để áp dụng thanh toán lương cho người lao động và làm căn cứ đóng các khoản liên đới BHXH. Thang lương phải lưu trữ tại văn phòng để giải trình khi đoàn liên ngành kiểm tra.",
+                            time: "Ngay khi có phát sinh lao động",
+                            penalty: "Lương tối thiểu vùng đảm bảo không thấp hơn mức quy định của Chính phủ cho từng vùng địa lý kinh tế."
+                          },
+                          {
+                            title: "Đăng ký Mã đơn vị BHXH & Nộp trực tuyến định kỳ",
+                            body: "Tạo hồ sơ thành lập Mã đơn vị đóng bảo hiểm tại quận/huyện sở tại. Định kỳ hàng tháng lập tờ khai biến động nhân sự (Mẫu D02-LT) để khai báo tăng, giảm hoặc điều chỉnh mức đóng.",
+                            time: "Đều đặn hàng tháng",
+                            penalty: "Trốn đóng bảo hiểm xã hội, ngoài xử lý phạt hành chính diện rộng, nếu số tiền trốn đóng lớn có thể cấu thành tội hình sự theo Điều 216 Bộ luật Hình sự Việt Nam."
+                          },
+                          {
+                            title: "Nghĩa vụ đóng nộp Kinh phí Công đoàn",
+                            body: "Doanh nghiệp bắt buộc nộp Kinh phí Công đoàn bằng 2% quỹ tiền lương làm căn cứ đóng BHXH cho người lao động, không phân biệt công ty đã thành lập Công đoàn cơ sở hay chưa.",
+                            time: "Nộp cùng thời điểm đóng BHXH",
+                            penalty: "Chậm nộp kinh phí công đoàn bị phạt từ 12% đến 15% số tiền chưa nộp."
+                          }
+                        ]
+                      },
+                      {
+                        phase: "GIAI ĐOẠN 5",
+                        title: "QUYẾT TOÁN THUẾ, THANH TRA ĐỊNH KỲ VÀ THỦ TỤC GIẢI THỂ",
+                        desc: "Giải quyết các rủi ro phát sinh khi kết thúc chu kỳ hoạt động kinh doanh hoặc tiếp đón đoàn thanh tra kiểm tra chính quy.",
+                        hkd: [
+                          {
+                            title: "Thanh tra đối chiếu thực tế doanh số của Chi cục Thuế",
+                            body: "Cơ quan thuế quận/huyện tiến hành thanh tra chéo số liệu dòng tiền các thẻ ngân hàng cá nhân đăng ký nhận tiền TMĐT, đối chiếu lịch sử hóa đơn bán lẻ của hộ kê khai để xác định tính trung thực trong báo cáo thuế.",
+                            time: "Đột xuất hoặc định kỳ 3 năm",
+                            penalty: "Gian lận doanh thu, kê khai sai bị phạt hành chính từ 1 đến 3 lần số tiền thuế trốn nộp."
+                          },
+                          {
+                            title: "Thủ tục chấm dứt hoạt động (Giải thể Hộ kinh doanh)",
+                            body: "1. Nộp hồ sơ chấm dứt mã số thuế và thanh toán đầy đủ công nợ thuế lên Chi cục Thuế sở tại. 2. Làm thủ tục chốt sổ BHXH cho lao động và khoá mã đóng bảo hiểm. 3. Nộp biên bản trả giấy chứng nhận kinh doanh lên UBND huyện để xoá tên hộ kinh doanh.",
+                            time: "Trong vòng 15-30 ngày làm việc",
+                            penalty: "Không làm thủ tục đóng MST mà bỏ địa bàn sẽ bị đưa vào danh sách đen nợ thuế nhà nước, người đại diện bị cấm xuất cảnh."
+                          }
+                        ],
+                        dn: [
+                          {
+                            title: "Thanh tra, quyết toán thuế định kỳ",
+                            body: "Đoàn thanh tra Thuế của Cục/Chi cục trực tiếp thanh kiểm tra sổ sách kế toán, chứng từ đối chiếu hóa đơn, sổ sách ngân hàng gốc của doanh nghiệp định kỳ 3 - 5 năm/lần hoặc quyết toán giải thể.",
+                            time: "Chu kỳ 3-5 năm một lần",
+                            penalty: "Doanh nghiệp cần lưu trữ hồ sơ kế toán tối thiểu 10 năm theo Luật Kế toán để tránh thất lạc tài liệu khi thanh tra."
+                          },
+                          {
+                            title: "Thủ tục giải thể và xoá sổ doanh nghiệp một cách hợp pháp",
+                            body: "Quy trình 5 bước: 1. Thông qua quyết định giải thể; 2. Đăng công bố giải thể (3 kỳ liên tiếp) trên Cổng thông tin ĐKDN; 3. Thanh toán hết các khoản nợ tiền lương, nợ bảo hiểm, nợ thuế; 4. Nộp hồ sơ quyết toán thuế giải thể tại Cơ quan Thuế để hoàn thành thủ tục đóng Mã số Thuế; 5. Nộp hồ sơ giải thể chính thức tại Phòng ĐKKD - Sở KH&ĐT để xóa tên pháp nhân.",
+                            time: "Thực tế dao động 3 - 6 tháng",
+                            penalty: "Nếu không quyết toán thuế giải thể, mã số doanh nghiệp sẽ bị treo cảnh báo nợ thuế, đình chỉ hoạt động và ảnh hưởng nghiêm trọng tới các pháp nhân khác do cùng chủ sở hữu sáng lập."
+                          }
+                        ]
+                      }
+                    ].map((step, pIdx) => {
+                      const list = lifecycleEntity === "hkd" ? step.hkd : step.dn;
+                      return (
+                        <div key={pIdx} className="relative md:grid md:grid-cols-12 md:gap-6 items-start">
+                          
+                          {/* Left bullet column for desktop, inline header for mobile */}
+                          <div className="md:col-span-3 pb-3 md:pb-0">
+                            <div className="sticky top-4 space-y-2">
+                              <span className="inline-block bg-[#800020] text-white text-[10px] uppercase font-black px-2.5 py-1 rounded tracking-widest shadow-sm">
+                                {step.phase}
+                              </span>
+                              <h5 className="font-black text-xs text-[#001F3F] uppercase leading-tight">
+                                {step.title}
+                              </h5>
+                              <p className="text-[10.5px] text-gray-500 hidden md:block leading-normal">
+                                {step.desc}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Right interactive items list */}
+                          <div className="md:col-span-9 space-y-4">
+                            <div className="grid grid-cols-1 gap-4">
+                              {list.map((item, iIdx) => (
+                                <div key={iIdx} className="bg-white border border-gray-200 hover:border-[#800020]/40 p-4 rounded-lg shadow-sm transition-all text-xs space-y-3">
+                                  <div className="flex items-start justify-between gap-3">
+                                    <h6 className="font-extrabold text-[#001F3F] text-xs flex items-center gap-1.5 leading-tight">
+                                      <span className="bg-[#001F3F] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center shrink-0">
+                                        {iIdx + 1}
+                                      </span>
+                                      {item.title}
+                                    </h6>
+                                    <span className="bg-slate-100 text-[#001F3F] text-[10px] font-bold px-2 py-0.5 rounded shrink-0">
+                                      ⏱️ {item.time}
+                                    </span>
+                                  </div>
+                                  
+                                  <p className="text-gray-600 leading-relaxed text-[11px] bg-slate-50/50 p-2.5 rounded border border-gray-100 font-sans">
+                                    {item.body}
+                                  </p>
+
+                                  <div className="bg-rose-50 border border-rose-200/50 text-[#800020] p-2.5 rounded flex items-start gap-1.5 text-[10.5px]">
+                                    <AlertTriangle size={14} className="shrink-0 mt-0.5 text-[#800020]" />
+                                    <div>
+                                      <span className="font-bold uppercase tracking-wider text-[9px] block">Rủi Ro & Chế Tài Xử Phạt:</span>
+                                      <span className="text-gray-700 font-medium">{item.penalty}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                        </div>
+                      );
+                    })}
+
+                  </div>
+
+                  {/* High professional final warning statement */}
+                  <div className="bg-[#800020]/5 border border-[#800020]/20 p-5 rounded-lg text-center space-y-3">
+                    <div className="text-xs font-black text-[#001F3F] uppercase tracking-wide flex items-center justify-center gap-2">
+                      <ShieldCheck className="text-[#800020]" size={18} />
+                      Khuyến Nghị Quan Trọng Từ Các Luật Sư Thuế Doanh Nghiệp
+                    </div>
+                    <p className="text-xs text-gray-700 max-w-2xl mx-auto leading-relaxed">
+                      "Luật pháp Việt Nam về Thuế & Bảo hiểm liên tục cập nhật đổi mới hàng năm. Hành vi tự ý kê khai thiếu sổ sách, chậm nộp, hoặc trốn đóng bảo hiểm của cả Hộ kinh doanh lẫn Doanh nghiệp đều có thể bị truy cứu trách nhiệm dân sự đến hình sự. Nên liên hệ thiết lập với một pháp nhân <strong>Đại lý Thuế được cấp phép hành nghề số 00056/BTC</strong> để gửi gắm hồ sơ và được bảo vệ tối đa lợi ích hợp pháp."
+                    </p>
+                    <div className="pt-1 flex justify-center gap-3">
+                      <button
+                        onClick={() => {
+                          setLeadForm(prev => ({
+                            ...prev,
+                            problem: `Yêu cầu lập hồ sơ tư vấn chu kỳ vòng đời pháp luật cho mô hình: ${lifecycleEntity === "hkd" ? "HỘ KINH DOANH" : "DOANH NGHIỆP"}`
+                          }));
+                          const scrollTarget = document.getElementById("lead-form-scroll-target");
+                          if (scrollTarget) scrollTarget.scrollIntoView({ behavior: "smooth" });
+                        }}
+                        className="bg-[#800020] text-white text-xs font-black px-5 py-2.5 rounded hover:bg-black transition-all uppercase tracking-wide shadow"
+                      >
+                        📞 Đăng ký nhận Bản đồ Lộ trình & Tư vấn Trực Tiếp
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              )}
+
             </div>
           )}
 
           {/* TAB 3: TAX SEARCH BOARD */}
           {activeTab === "lookup" && (
             <div id="view-tab-lookup" className="space-y-6">
+
               <div className="border-b border-gray-200 pb-2">
                 <h2 className="text-2xl font-black text-[#001F3F] uppercase tracking-wide">
                   Cổng Tra Cứu Nghĩa Vụ & Biểu Thuế Định Mức
                 </h2>
                 <p className="text-xs text-gray-500">Cung cấp bộ lọc tra cứu nhanh chính sách thuế rủi ro trực quan cho các hộ nhỏ trực tiếp.</p>
+              </div>
+
+              {/* CITIZEN QUICK SEARCH SHORTCUTS */}
+              <div className="bg-gradient-to-r from-red-50 to-amber-50 border border-amber-200 rounded-lg p-5 space-y-3 shadow-xs">
+                <div className="flex items-center gap-2 text-amber-900 font-extrabold">
+                  <Sparkles size={16} className="text-[#800020] animate-pulse" />
+                  <span className="text-xs font-black uppercase tracking-wider">
+                    Phím tắt tra cứu nhanh cho người chưa biết gì về thuế:
+                  </span>
+                </div>
+                <p className="text-[11px] text-gray-500 leading-normal font-sans">
+                  Để giúp người dân dễ dàng tìm kiếm thông tin không bị ngợp, hãy bấm thẳng vào các thắc mắc thực tế dưới đây để hệ thống hiển thị nhanh số liệu và biểu mức:
+                </p>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {[
+                    {
+                      label: "🏪 Shop bán hàng Online (TikTok Shop, Shopee) đóng thuế mấy %?",
+                      action: () => {
+                        setLookupMst("0316827361");
+                        const tableEl = document.querySelector("table");
+                        if (tableEl) tableEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                    },
+                    {
+                      label: "🏠 Có căn hộ hoặc mặt bằng cho thuê thì mức đóng thế nào?",
+                      action: () => {
+                        setLookupMst("0316827361");
+                        // Let's scroll to the table
+                        const tableEl = document.querySelector("table");
+                        if (tableEl) tableEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                    },
+                    {
+                      label: "⚠️ Trễ nộp tờ khai Lệ phí Môn bài quá hạn bị phạt bao nhiêu?",
+                      action: () => {
+                        const penEl = document.getElementById("penalty-rules-section");
+                        if (penEl) penEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                    },
+                    {
+                      label: "📅 Hạn chót nộp tiền thuế Quý 2 năm 2026 là ngày nào?",
+                      action: () => {
+                        const calEl = document.getElementById("tax-calendar-section");
+                        if (calEl) calEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                    },
+                    {
+                      label: "💬 Muốn thảo luận chi tiết về thuế nhà đất với Trợ lý AI?",
+                      action: () => {
+                        setActiveTab("faq");
+                        sendChatMessage("Tôi muốn hỏi về việc cho thuê bất động sản và các khoản thuế liên quan đối với người dân tự kinh doanh.");
+                      }
+                    }
+                  ].map((btn, idx) => (
+                    <button
+                      key={idx}
+                      onClick={btn.action}
+                      className="bg-white hover:bg-[#800020] hover:text-white text-[#001F3F] border border-gray-250 hover:border-[#800020] rounded-md px-3.5 py-2 text-[11px] font-bold shadow-sm transition-all duration-250 cursor-pointer active:scale-95"
+                    >
+                      {btn.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Quick MST Lookup Form */}
@@ -987,7 +1578,7 @@ export default function App() {
                   <Percent size={16} className="text-[#800020]" />
                   Biểu tỷ lệ thuế giá trị gia tăng & thu nhập cá nhân theo ngành
                 </h3>
-                <p className="text-xs text-gray-500">Bảng chi tiết dựa trên Thông tư 40/2021/TT-BTC áp dụng cho hộ khoán & cá nhân kinh doanhonline.</p>
+                <p className="text-xs text-gray-500">Bảng chi tiết dựa trên Thông tư 40/2021/TT-BTC áp dụng cho hộ kê khai theo Thông tư 88 & cá nhân kinh doanh online (phương pháp thuế khoán đã bãi bỏ từ 01/01/2026).</p>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse border border-gray-200 text-xs">
                     <thead>
@@ -1016,7 +1607,7 @@ export default function App() {
 
               {/* Tax Calendar & Event Tracker */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                <div className="space-y-3">
+                <div id="tax-calendar-section" className="space-y-3 scroll-mt-6">
                   <h4 className="font-extrabold text-sm text-[#001F3F] uppercase flex items-center gap-1">
                     <CalendarDays size={15} className="text-[#800020]" />
                     Thời hạn kê nộp báo cáo quý & năm
@@ -1033,7 +1624,7 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div id="penalty-rules-section" className="space-y-3 scroll-mt-6">
                   <h4 className="font-extrabold text-sm text-[#001F3F] uppercase flex items-center gap-1">
                     <Scale size={15} className="text-[#800020]" />
                     Biểu phí phạt chậm nộp tờ khai (NĐ 125/2020)
@@ -1057,7 +1648,7 @@ export default function App() {
             <div id="view-tab-guides" className="space-y-6">
               <div className="border-b border-gray-200 pb-2">
                 <h2 className="text-2xl font-black text-[#001F3F] uppercase tracking-wide">
-                  Kiến Thức Thuế Thực Chiến - Bài viết hướng dẫn từng bước
+                  Kiến Thức Thuế - Bài viết hướng dẫn từng bước
                 </h2>
                 <p className="text-xs text-gray-500">Cộng đồng chia sẻ cẩm nang bóc tách dữ liệu rủi ro thực tế cho hộ kinh doanh.</p>
               </div>
@@ -1092,7 +1683,7 @@ export default function App() {
                 <article className="bg-[#FDFDFD] border border-gray-250 p-6 md:p-8 rounded-lg space-y-5 shadow-sm max-w-4xl mx-auto">
                   <div className="space-y-3 pb-4 border-b border-gray-200">
                     <span className="text-[#800020] font-black text-xs uppercase tracking-widest block font-mono">
-                      #CẨM NANG THỰC CHIẾN - ĐẠI LÝ THUẾ THÀNH PHỐ
+                      #CẨM NANG HƯỚNG DẪN - ĐẠI LÝ THUẾ THÀNH PHỐ
                     </span>
                     <h2 className="text-2xl font-black text-[#001F3F] leading-tight font-serif">
                       {selectedGuide.title}
@@ -1303,18 +1894,70 @@ export default function App() {
                   </div>
                 ))}
               </div>
-
             </div>
           )}
 
-          {/* TAB 6: TAX CALCULATOR UTILITY */}
+          {/* TAB 3: TAX CALCULATOR UTILITY */}
           {activeTab === "calculator" && (
             <div id="view-tab-calculator" className="space-y-6">
+
               <div className="border-b border-gray-200 pb-2">
                 <h2 className="text-2xl font-black text-[#001F3F] uppercase tracking-wide">
                   Phần Mềm Tính Thử Số Thuế Phải Nộp Trực Tuyến
                 </h2>
                 <p className="text-xs text-gray-500">Nhập doanh thu thô để hệ thống bóc tách số liệu thuế tự động gãy gọn theo Thông tư 40.</p>
+              </div>
+
+              {/* Presets for non-tax experts */}
+              <div className="bg-[#800020]/5 border-l-4 border-[#800020] p-4 rounded-r-lg space-y-2">
+                <div className="flex items-center gap-1.5 text-xs font-black text-[#001F3F] uppercase tracking-wider">
+                  <Sparkles size={14} className="text-[#800020] animate-pulse" />
+                  Bạn chưa biết tính từ đâu? Chọn nhanh tình huống thực tế của bạn dưới đây để chạy thử máy tính:
+                </div>
+                <div className="flex flex-wrap gap-2 pt-1 text-xs">
+                  {[
+                    {
+                      label: "🏪 1. Shop TikTok Bán Quần Áo (Doanh thu 500 Triệu/năm)",
+                      action: () => {
+                        setCalcType("hkd");
+                        setCalcHkdSector("PP"); // Phân phối hàng hoá
+                        setCalcHkdRevenue(500000000);
+                      }
+                    },
+                    {
+                      label: "🏢 2. Hộ Gia Đình Mở Quán Ăn (Doanh thu 200 Triệu/năm)",
+                      action: () => {
+                        setCalcType("hkd");
+                        setCalcHkdSector("AH"); // Ăn uống (Thương mại dịch vụ ăn uống)
+                        setCalcHkdRevenue(200000000);
+                      }
+                    },
+                    {
+                      label: "🏠 3. Cho Thuê Căn Hộ Chung Cư (15 Triệu/tháng trong 12 tháng)",
+                      action: () => {
+                        setCalcType("rent");
+                        setCalcRentMonthly(15000000);
+                        setCalcRentMonths(12);
+                      }
+                    },
+                    {
+                      label: "⚠️ 4. Trễ Nộp Tờ Khai 6 Mươi Ngày (Số tiền nợ thuế 10 Triệu đồng)",
+                      action: () => {
+                        setCalcType("penalty");
+                        setCalcPenaltyTaxDebt(10000000);
+                        setCalcPenaltyDays(60);
+                      }
+                    }
+                  ].map((preset, pIdx) => (
+                    <button
+                      key={preset.label}
+                      onClick={preset.action}
+                      className="bg-white hover:bg-[#800020] hover:text-white text-[#001F3F] border border-gray-250 hover:border-[#800020] rounded px-3 py-1.5 text-[11px] font-bold shadow-xs transition-all active:scale-95 cursor-pointer"
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Calculator mode switcher */}
@@ -1391,6 +2034,45 @@ export default function App() {
                           * Doanh thu tính thuế là số tổng khách thanh toán trước khi trừ bất kỳ chiết khuyến mãi hay phí dịch vụ của các bên trung gian shopee tiktok.
                         </span>
                       </div>
+
+                      {/* E-Commerce Platform Payment Process Configuration */}
+                      {(calcHkdSector === "BL" || calcHkdSector === "K") && (
+                        <div className="space-y-2 p-3.5 bg-white border border-gray-250 rounded shadow-sm">
+                          <label className="text-xs font-black text-[#001F3F] uppercase block">
+                            Cấu hình dòng tiền giao dịch thương mại điện tử:
+                          </label>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-1">
+                            <button
+                              type="button"
+                              onClick={() => setCalcHkdPlatformPayment("yes")}
+                              className={`p-3 rounded text-left border text-xs font-bold flex flex-col justify-between transition-all ${
+                                calcHkdPlatformPayment === "yes"
+                                  ? "border-[#800020] bg-red-50/40 text-[#800020] ring-1 ring-[#800020]"
+                                  : "border-gray-200 text-gray-600 bg-white hover:bg-gray-50"
+                              }`}
+                            >
+                              <span>🛡️ 1. Có thanh toán qua Sàn</span>
+                              <span className="text-[10px] text-gray-500 font-medium normal-case mt-1.5 block leading-relaxed">
+                                (Ví dụ: đặt đơn Shopee/TikTok có liên kết thanh toán của sàn. Sàn nộp thuế thay, được MIỄN tự khai.)
+                              </span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setCalcHkdPlatformPayment("no")}
+                              className={`p-3 rounded text-left border text-xs font-bold flex flex-col justify-between transition-all ${
+                                calcHkdPlatformPayment === "no"
+                                  ? "border-[#800020] bg-red-50/40 text-[#800020] ring-1 ring-[#800020]"
+                                  : "border-gray-200 text-gray-600 bg-white hover:bg-gray-50"
+                              }`}
+                            >
+                              <span>✍️ 2. Không thanh toán qua Sàn</span>
+                              <span className="text-[10px] text-gray-500 font-medium normal-case mt-1.5 block leading-relaxed">
+                                (Ví dụ: bán qua Fb, Zalo tự thỏa thuận COD, chuyển khoản lẻ ngoài. Bắt buộc TỰ KHAI THUẾ quý/năm.)
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -1499,7 +2181,7 @@ export default function App() {
 
                     {calcType === "rent" && (
                       <div className="mt-2 space-y-3">
-                        <div className="text-gray-500 text-xs">Tổng số tiền thuế ước tính nộp (Khoán 10%):</div>
+                        <div className="text-gray-500 text-xs">Tổng số tiền thuế ước tính nộp (Thuế suất 10%):</div>
                         <div className="text-3xl font-black text-[#800020] tracking-tight">
                           {(currentResultObj as any).totalTax.toLocaleString()} <span className="text-xs text-slate-500">VNĐ</span>
                         </div>
@@ -1568,7 +2250,7 @@ export default function App() {
             <div id="view-tab-faq" className="space-y-6">
               <div className="border-b border-gray-200 pb-2">
                 <h2 className="text-2xl font-black text-[#001F3F] uppercase tracking-wide">
-                  Hỏi Đáp Nhanh & Trợ Lý AI Thuế Thực Chiến
+                  Hỏi Đáp Nhanh & Trợ Lý AI Thuế
                 </h2>
                 <p className="text-xs text-gray-500">Nhập trực tiếp tình huống của bạn để hệ thống rà quét tự động hoặc bấm chọn câu hỏi mẫu hay gặp bên dưới.</p>
               </div>
@@ -1613,7 +2295,7 @@ export default function App() {
                 <div className="bg-[#001F3F] p-3 text-white flex justify-between items-center text-xs">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse shrink-0"></span>
-                    <strong>Hệ thống Trợ lý Thuế AI Thực Chiến 24/7</strong>
+                    <strong>Hệ thống Trợ lý Thuế AI 24/7</strong>
                   </div>
                   <span className="text-[10px] text-gray-300 font-mono">Model: Gemini 3.5 Active</span>
                 </div>
@@ -1733,7 +2415,7 @@ export default function App() {
                       <div className="space-y-2 bg-slate-50 p-3 rounded border border-gray-200">
                         <div className="font-extrabold text-[#001F3F] uppercase tracking-wider flex items-center gap-1">
                           <Scale size={13} className="text-[#001F3F]" />
-                          HƯỚNG ĐI XỬ LÝ THỰC CHIẾN CỦA ĐẠI LÝ:
+                          HƯỚNG ĐI XỬ LÝ CỦA ĐẠI LÝ:
                         </div>
                         <p className="text-gray-600 leading-relaxed">{cs.solution}</p>
                       </div>
@@ -1788,7 +2470,7 @@ export default function App() {
               ) : (
                 <div className="space-y-4">
                   <div className="flex justify-between items-center bg-green-50 p-3 rounded border border-green-200">
-                    <span className="text-xs text-green-900 font-bold">● Chế độ quản trị viên thực chiến đang chạy</span>
+                    <span className="text-xs text-green-900 font-bold">● Chế độ quản trị viên đang chạy</span>
                     <button 
                       onClick={() => setAdminAuth(false)}
                       className="text-xs bg-gray-200 px-2 py-1 rounded text-gray-700 hover:bg-gray-300"
@@ -1932,14 +2614,12 @@ export default function App() {
                     const selectVal = e.target.value;
                     if(selectVal === "rate") setActiveTab("lookup");
                     if(selectVal === "penalty") { setActiveTab("calculator"); setCalcType("penalty"); }
-                    if(selectVal === "doc") setActiveTab("laws");
                   }}
                   className="w-full text-xs p-2.5 bg-slate-50 border border-gray-300 rounded focus:outline-none"
                 >
                   <option value="">-- Mời bạn chọn mục --</option>
                   <option value="rate">Tra cứu tỷ nộp thuế Shopee/TikTok</option>
                   <option value="penalty">Tra cứu khung phạt chậm môn bài</option>
-                  <option value="doc">Tìm văn bản thông tư 40/2021</option>
                 </select>
               </div>
 
@@ -2016,7 +2696,7 @@ export default function App() {
                   className="w-full p-2 bg-slate-50 border border-gray-300 rounded"
                 >
                   <option value="Shopee/TikTok Shop">Bán hàng sàn Shopee / TikTok / Lazada</option>
-                  <option value="Hộ kinh doanh nộp thuế">Hộ kinh doanh (Thuế khoán / Kê khai)</option>
+                  <option value="Hộ kinh doanh nộp thuế">Hộ kinh doanh (Kê khai theo Thông tư 88)</option>
                   <option value="Cho thuê nhà ở">Cho thuê nhà ở / mặt bằng cho công ty</option>
                   <option value="Doanh nghiệp SME">Doanh nghiệp vừa và nhỏ</option>
                   <option value="Freelancer/Affiliate">Affiliate / KOL / Ngoại tệ MMO</option>
@@ -2101,7 +2781,7 @@ export default function App() {
               </div>
             </div>
             <div className="pt-2 text-[10px] text-gray-400 italic font-mono border-t border-white/10">
-              Thời gian làm việc: liên tục từ 7:30 - 21:00 hàng ngày (kể cả thứ Bảy & Chủ Nhật).
+              Thời gian làm việc: liên tục từ 8:00 - 17:00 hàng ngày (Từ thứ 2 đến thứ 6) từ 8:00 - 12:00 vào Thứ Bảy .
             </div>
           </div>
 
@@ -2131,15 +2811,7 @@ export default function App() {
 
       {/* Footer component with rigorous metadata */}
       <footer id="main-editorial-footer" className="bg-[#001F3F] text-white border-t border-red-950 py-8 px-4 md:px-8 shrink-0 mt-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-gray-300 pb-6 border-b border-white/10">
-          <div className="space-y-2">
-            <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">ĐẠI LÝ THUẾ THÀNH PHỐ</h4>
-            <p className="leading-relaxed">
-              Thành viên chính thức của Hội Tư vấn Thuế Việt Nam (VTCA). Quyết định công nhận số 20xx/QĐ-TCT ban hành bởi Tổng cục Thuế.
-            </p>
-            <span className="block text-[11px] font-mono text-red-300">MST Công Ty: 0316382012</span>
-          </div>
-
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-gray-300 pb-6 border-b border-white/10">
           <div className="space-y-2">
             <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">TỪ KHÓA TÌM KIẾM HỮU ÍCH</h4>
             <div className="flex flex-wrap gap-1">
@@ -2157,9 +2829,10 @@ export default function App() {
           <div className="space-y-2">
             <h4 className="font-extrabold text-white text-sm uppercase tracking-wide">LIÊN HỆ TRỰC TIẾP</h4>
             <div className="leading-relaxed text-gray-300 space-y-1">
+              <div>📞 <strong className="text-white">Hotline:</strong> 0819.319.919</div>
               <div>📍 <strong className="text-white">Trụ sở chính:</strong> 39 Đỗ Thị Tâm, P. Phú Thọ Hoà, TP.HCM</div>
               <div>🏢 <strong className="text-white">Văn phòng:</strong> 61 Phan Đình Phùng, P. Phú Thọ Hoà, TP.HCM</div>
-              <div>✉️ <strong className="text-white">Email:</strong> hotro@dailythuetp.com.vn</div>
+              <div>✉️ <strong className="text-white">Email:</strong> dailythuethanhpho@gmail.com</div>
               <div className="text-[10px] text-red-300 font-bold mt-1 uppercase tracking-wide">✔ ĐỒNG HÀNH PHÁP LÝ DOANH NGHIỆP</div>
             </div>
           </div>
@@ -2170,9 +2843,7 @@ export default function App() {
             © 2026 Đại Lý Thuế Thành Phố. Bảo lưu mọi quyền pháp lý. Giấy phép hành nghề số 00056/BTC.
           </div>
           <div className="flex gap-4">
-            <span className="hover:text-white cursor-pointer" onClick={() => setActiveTab("laws")}>Chính sách bảo mật</span>
-            <span>●</span>
-            <span className="hover:text-white cursor-pointer" onClick={() => setActiveTab("admin")}>Bảng điều hành</span>
+            <span className="hover:text-white cursor-pointer" onClick={() => alert("Đại Lý Thuế Thành Phố cam kết bảo mật tuyệt đối 100% mọi thông tin hồ sơ và dữ liệu kinh doanh của quý khách hàng.")}>Chính sách bảo mật</span>
           </div>
         </div>
       </footer>

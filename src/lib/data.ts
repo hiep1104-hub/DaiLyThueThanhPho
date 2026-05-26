@@ -11,7 +11,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
     id: "dk-hkd",
     title: "Đăng ký thành lập Hộ kinh doanh",
     group: "HKD",
-    shortDesc: "Đăng ký giấy phép kinh doanh, mã số thuế hộ và kích hoạt tài khoản nộp thuế điện tử chỉ trong 3 ngày.",
+    shortDesc: "Đăng ký giấy phép kinh doanh liên thông mã số thuế hộ và kích hoạt chữ ký số, hóa đơn điện tử chỉ trong 3 ngày.",
     targetUser: "Cá nhân khởi nghiệp, chủ cửa hàng, quán ăn, xưởng sản xuất nhỏ có nhu cầu pháp lý hóa hoạt động chuyên nghiệp.",
     documentsNeeded: [
       "Ảnh chụp CCCD của chủ hộ còn hiệu lực.",
@@ -19,39 +19,40 @@ export const SERVICES_DATA: ServiceDetail[] = [
       "Thông tin về ngành nghề kinh doanh và vốn dự kiến."
     ],
     processSteps: [
-      "Bước 1: Tiếp nhận CCCD và tư vấn lựa chọn mã ngành nghề tối ưu thuế.",
-      "Bước 2: Soạn hồ sơ đăng ký thành lập và gửi ký điện tử hoặc ký tay.",
-      "Bước 3: Nộp hồ sơ lên Phòng Tài chính - Kế hoạch UBND Quận/Huyện.",
-      "Bước 4: Nhận Giấy đăng ký hộ kinh doanh sau 3 ngày và khắc dấu vuông thương hiệu.",
-      "Bước 5: Kê khai thuế ban đầu và đăng ký tài khoản thuế điện tử Thuedientu.gdt.gov.vn."
+      "Bước 1: Tiếp nhận CCCD và tư vấn lựa chọn mã ngành nghề tối ưu theo hệ thống phân ngành mới.",
+      "Bước 2: Soạn hồ sơ đăng ký thành lập liên thông ĐKKD và đăng ký thuế theo Nghị định 141/2026/NĐ-CP.",
+      "Bước 3: Nộp hồ sơ trực tuyến qua Cổng thông tin quốc gia về đăng ký doanh nghiệp/hợp tác xã/hộ kinh doanh.",
+      "Bước 4: Nhận Giấy chứng nhận đăng ký hộ kinh doanh điện tử (hoặc bản giấy). Được MIỄN 100% lệ phí theo Thông tư 152/2025/TT-BTC khi nộp qua mạng.",
+      "Bước 5: Kê khai các tờ khai thiết lập ban đầu và đăng ký tài khoản thuế điện tử Thuedientu.gdt.gov.vn."
     ],
-    duration: "3 - 5 ngày làm việc",
+    duration: "1 - 3 ngày làm việc",
     faq: [
+      { q: "Lệ phí đăng ký hộ kinh doanh từ năm 2026 quy định thế nào?", a: "Theo Thông tư 152/2025/TT-BTC, lệ phí đăng ký thành lập mới hộ kinh doanh ghi nhận là 100.000 đồng/lần khi làm bản giấy trực tiếp, nhưng được MIỄN 100% khi thực hiện qua mạng điện tử (online)." },
       { q: "Hộ kinh doanh có bắt buộc khắc dấu tròn không?", a: "Không, hộ kinh doanh không có tư cách pháp nhân nên không dùng con dấu tròn pháp lý của Bộ Công An, mà chỉ dùng con dấu vuông của hộ chứa Mã số thuế, Tên hộ, Địa chỉ để giao dịch hay xuất hóa đơn." },
-      { q: "Mở hộ kinh doanh xong chưa hoạt động có phải nộp thuế không?", a: "Trong vòng 30 ngày kể từ ngày cấp giấy phép, bạn phải nộp tờ khai môn bài. Thuế khoán chỉ phát sinh khi cơ quan thuế rà soát doanh thu thực tế." }
+      { q: "Mở hộ kinh doanh xong chưa hoạt động có phải nộp thuế không?", a: "Trong vòng 30 ngày kể từ ngày cấp giấy phép, bạn phải nộp tờ khai lệ phí môn bài. Trách nhiệm nộp thuế chỉ phát sinh khi có doanh thu thực tế và vượt ngưỡng miễn thuế 200 triệu đồng/năm." }
     ]
   },
   {
-    id: "thue-khoan-hkd",
-    title: "Kê khai thuế khoán & Thuế phương pháp kê khai",
+    id: "thue-kekhai-hkd",
+    title: "Dịch vụ Kê Khai Thuế theo Thông tư 88",
     group: "HKD",
-    shortDesc: "Tối ưu hóa mức thuế khoán hàng năm hoặc lập sổ sách kế toán thuế theo Thông tư 88/2021/TT-BTC chuyên nghiệp.",
-    targetUser: "Hộ kinh doanh lớn, sạp chợ, nhà hàng có doanh thu cao cần chứng minh chi phí đầu vào hoặc hộ khoán muốn xin giảm thuế.",
+    shortDesc: "Xây dựng hệ thống sổ sách kế toán mẫu, lập và nộp tờ khai thuế điện tử theo Thông tư 88/2021/TT-BTC chuyên nghiệp thay thế hoàn toàn cho thuế khoán bị bãi bỏ.",
+    targetUser: "Hộ kinh doanh bắt buộc chuyển từ phương pháp thuế khoán sang kê khai sổ sách kế toán từ ngày 01/01/2026.",
     documentsNeeded: [
-      "Giấy phép ĐKKD và Mã số thuế hộ.",
-      "Tờ khai doanh thu tự khai hoặc Bảng kê hóa đơn, chứng từ mua bán nếu là HKD kê khai.",
-      "Thông báo định mức thuế khoán năm trước (nếu có)."
+      "Giấy đăng ký kinh doanh và mã số thuế hộ.",
+      "Bộ hóa đơn VAT đầu ra và hóa đơn, chứng từ mua hàng đầu vào.",
+      "Chữ ký số (Token/Cloud) riêng của hộ kinh doanh."
     ],
     processSteps: [
-      "Bước 1: Khảo sát thực tế ngành kinh doanh, địa điểm, nhân sự và phương thức bán hàng.",
-      "Bước 2: Khai báo tờ khai thuế khoán mẫu 01/CNKD nộp định kỳ tháng/quý/năm.",
-      "Bước 3: Với HKD Kê khai: Thiết lập và ghi chép 4 mẫu sổ kế toán (Sổ doanh thu, Sổ vật liệu, Sổ tiền mặt, Sổ tài sản) theo đúng Thông tư 88/2021/TT-BTC.",
-      "Bước 4: Đồng hành giải trình với cán bộ Quản lý thuế trực tiếp khi có đoàn khảo sát doanh thu thực tế."
+      "Bước 1: Khảo sát dòng tiền bán hàng, hướng dẫn bóc tách tài khoản kinh doanh với chi tiêu cá nhân.",
+      "Bước 2: Đăng ký sử dụng hóa đơn điện tử có mã của cơ quan thuế theo mẫu 01/ĐKTĐ-HĐĐT.",
+      "Bước 3: Thiết lập và ghi chép 5 mẫu sổ kế toán (Sổ doanh thu, Sổ vật liệu, Sổ lương, Sổ tiền mặt, Sổ chi tiết bán hàng) theo đúng Thông tư 88/2021/TT-BTC.",
+      "Bước 4: Đại diện làm việc, giải trình số liệu trực tiếp với Chi cục Thuế Quận/Huyện định kỳ hàng quý."
     ],
     duration: "Thực hiện định kỳ hàng quý hoặc đại diện xử lý trong 7 ngày",
     faq: [
-      { q: "Hộ kinh doanh kê khai khác gì hộ khoán?", a: "Hộ kinh doanh kê khai bắt buộc phải mở sổ sách, lưu trữ hóa đơn chứng từ đầu vào/đầu ra và nộp thuế theo doanh thu thực tế xuất hóa đơn. Hộ khoán chỉ nộp một mức ấn định hàng tháng do Chi cục thuế thẩm định." },
-      { q: "Doanh thu dưới 100 triệu có phải nộp thuế khoán không?", a: "Doanh thu kinh doanh từ 100 triệu đồng/năm trở xuống thuộc diện miễn thuế GTGT và thuế TNCN." }
+      { q: "Hội kinh doanh kê khai có bắt buộc không?", a: "Từ ngày 01/01/2026, phương pháp thuế khoán đã chính thức bãi bỏ hoàn toàn cho các hộ kinh doanh. Tất cả các hộ kinh doanh phát sinh buộc phải áp dụng phương pháp Kê khai theo Thông tư 88, có mở đủ 5 loại sổ kế toán và sử dụng hoá đơn điện tử." },
+      { q: "Doanh thu dưới bao nhiêu thì được miễn nộp thuế?", a: "Theo quy định mới nhất từ năm 2026, doanh thu kinh doanh dưới 200 triệu đồng/năm thuộc diện miễn thuế GTGT và thuế TNCN (trước đây là dưới 100 triệu đồng/năm)." }
     ]
   },
   {
@@ -119,7 +120,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
     ],
     duration: "3 - 7 ngày làm việc",
     faq: [
-      { q: "Sàn TMĐT có trừ thuế trực tiếp không?", a: "Hiện nay TikTok Shop/Shopee chỉ khấu trừ thuế thu nhập nếu chủ shop là cá nhân nước ngoài, còn cá nhân Việt Nam tự có nghĩa vụ kê khai nộp thuế dựa trên dữ liệu sàn gửi Tổng cục Thuế." },
+      { q: "Sàn TMĐT có trừ thuế trực tiếp không?", a: "Được chia làm 2 loại rõ rệt theo quy định: 1. Có thanh toán qua sàn (như Shopee, TikTok Shop,...): Sàn thực hiện kê khai và nộp thuế thay (nộp thuế dùm), hộ/cá nhân bán hàng không cần phải tự khai thuế hàng tháng/quý và cuối năm quyết toán thuế. 2. Không thanh toán qua sàn (như quảng cáo Facebook, tự thỏa thuận COD, chuyển khoản trực tiếp bên ngoài hệ thống thanh toán của sàn): Người kinh doanh bắt buộc tự kê khai và quyết toán thuế theo quy định hàng tháng, hàng quý." },
       { q: "Doanh thu tính thuế là tiền nhận về bank hay tổng của khách thanh toán?", a: "Doanh thu tính thuế là tổng tiền khách thanh toán cho đơn hàng thành công, không tính phí ship của khách nhưng bao gồm tiền giảm giá sàn tài trợ." }
     ]
   },
@@ -152,7 +153,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
     title: "Thuế cho thuê Nhà, Mặt bằng, Căn hộ",
     group: "CTTS",
     shortDesc: "Kê khai thuế cho thuê nhà trọn gói, xử lý các hồ sơ cho công ty thuê cần xuất hóa đơn tài chính khấu trừ.",
-    targetUser: "Chủ hộ có nhà cho thuê làm văn phòng, thuê mặt bằng kinh doanh, chung cư, phòng trọ doanh thu trên 100tr/năm.",
+    targetUser: "Chủ hộ có nhà cho thuê làm văn phòng, thuê mặt bằng kinh doanh, chung cư, phòng trọ doanh thu trên 200tr/năm.",
     documentsNeeded: [
       "Hợp đồng cho thuê tài sản (hợp đồng thuê nhà).",
       "Giấy chứng nhận quyền sở hữu nhà (Sổ đỏ, Sổ hồng) bản photo.",
@@ -166,7 +167,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
     ],
     duration: "2 - 3 ngày làm việc",
     faq: [
-      { q: "Nhà cho thuê dưới 100 triệu/năm có phải nộp thuế không?", a: "Không, miễn thuế hoàn toàn cả GTGT và TNCN. Nhưng nếu có từ 2 căn trở lên, tổng doanh thu cộng dồn vượt 100 triệu/năm vẫn phải đóng thuế cho toàn bộ." },
+      { q: "Nhà cho thuê dưới 200 triệu/năm có phải nộp thuế không?", a: "Không, miễn thuế hoàn toàn cả GTGT và TNCN từ năm 2026. Nhưng nếu có từ 2 căn trở lên, tổng doanh thu cộng dồn vượt 200 triệu/năm vẫn phải đóng thuế cho toàn bộ." },
       { q: "Giá cho thuê nhà tính thuế gồm phí quản lý hay chưa?", a: "Tính trên tổng số tiền ghi trên hợp đồng kinh tế nhận về thực tế." }
     ]
   },
@@ -224,15 +225,45 @@ export const SERVICES_DATA: ServiceDetail[] = [
 
 export const LEGAL_DOCS_DATA: LegalDoc[] = [
   {
+    id: "nd141-2026",
+    category: "NghiDinh",
+    number: "Nghị định 141/2026/NĐ-CP",
+    title: "Quy định về đăng ký hợp tác xã, liên hiệp hợp tác xã, hộ kinh doanh",
+    year: 2026,
+    field: "ĐKKD Hộ kinh doanh & HTX",
+    summary: "Xác lập cơ chế đăng ký kinh doanh liên thông đăng ký thuế, rút ngắn thời gian chuẩn bị hồ sơ và hỗ trợ hoàn toàn việc đăng ký điện tử cho hộ kinh doanh.",
+    contentBullets: [
+      "Quy chế liên thông điện tử hoàn toàn thủ tục đăng ký kinh doanh với đăng ký thuế đối với hộ kinh doanh.",
+      "Cho phép cấp Giấy chứng nhận đăng ký hộ kinh doanh dưới dạng điện tử có giá trị pháp lý tương đương bản giấy.",
+      "Rút ngắn quy trình giải quyết đăng ký mới, thay đổi nội dung đăng ký, tạm ngừng, hoặc giải thể hộ kinh doanh."
+    ],
+    downloadUrl: "#"
+  },
+  {
+    id: "tt152-2025",
+    category: "ThongTu",
+    number: "Thông tư 152/2025/TT-BTC",
+    title: "Quy định về mức thu, chế độ thu, nộp, quản lý lệ phí đăng ký hộ kinh doanh, hợp tác xã",
+    year: 2025,
+    field: "Lệ phí Đăng ký",
+    summary: "Thông tư của Bộ Tài chính quy định chi tiết mức lệ phí khi đăng ký hộ kinh doanh, đặc biệt là chính sách miễn lệ phí khi đăng ký online.",
+    contentBullets: [
+      "Quy định lệ phí đăng ký hộ kinh doanh trực tiếp là 100.000 đồng/lần đăng ký mới (trước đây là 100.000đ theo quy định địa phương cũ).",
+      "MIỄN 100% lệ phí đăng ký đối với trường hợp đăng ký qua mạng thông tin điện tử trực tuyến.",
+      "Quy chế thu, nộp và quản lý sử dụng nguồn thu lệ phí đăng ký giữa các cơ quan đăng ký kinh doanh cấp huyện."
+    ],
+    downloadUrl: "#"
+  },
+  {
     id: "tt40-2021",
     category: "ThongTu",
     number: "Thông tư 40/2021/TT-BTC",
     title: "Hướng dẫn thuế giá trị gia tăng và thuế thu nhập cá nhân đối với hộ kinh doanh, cá nhân kinh doanh",
     year: 2021,
     field: "Hộ kinh doanh & Cá nhân",
-    summary: "Văn bản xương sống hướng dẫn cách tính thuế của tất cả hộ kinh doanh, cá nhân bán hàng online, thương mại điện tử và cho thuê nhà.",
+    summary: "Vavan bản xương sống hướng dẫn cách tính thuế của tất cả hộ kinh doanh, cá nhân bán hàng online, thương mại điện tử và cho thuê nhà.",
     contentBullets: [
-      "Quy định rõ cá nhân có doanh thu từ kinh doanh dưới 100 triệu đồng/năm thuộc diện không phải nộp thuế GTGT và TNCN.",
+      "Quy định rõ cá nhân có doanh thu từ kinh doanh dưới 200 triệu đồng/năm (theo cập nhật mới nhất) thuộc diện không phải nộp thuế GTGT và TNCN.",
       "Chi tiết biểu tỷ lệ thuế GTGT và TNCN theo từng loại hình ngành nghề (Thương mại: GTGT 1% - TNCN 0.5%; Dịch vụ: GTGT 5% - TNCN 2%...).",
       "Quy định nghĩa vụ kê khai của Sàn thương mại điện tử và tổ chức trung gian nộp thay thuế."
     ],
@@ -292,30 +323,31 @@ export const PRACTICAL_GUIDES_DATA: PracticalGuide[] = [
     title: "Bán hàng trên TikTok Shop / Shopee nộp thuế như thế nào là đúng luật?",
     summary: "Chi tiết lộ trình rà soát, cách tự tính thuế chuẩn dựa trên doanh thu của sàn và phương pháp kê khai nộp thuế cá nhân.",
     checklist: [
-      "Không lấy số nhận về tài khoản ngân hàng để khai thuế (Sẽ bị lệch do phí sàn và hoa hồng).",
+      "Xác định loại hình giao dịch: Sàn có thanh toán qua sàn (sàn kê khai & nộp thuế thay) hay Sàn không thanh toán qua sàn (bắt buộc tự kê khai hàng tháng/quý).",
+      "Không lấy số nhận về tài khoản ngân hàng để khai thuế đối với trường hợp tự khai (Sẽ bị lệch do phí sàn và hoa hồng).",
       "Chụp đối soát thuế cuối tháng tại giao diện kế toán của Shopee/TikTok Shop.",
       "Chuẩn bị hóa đơn chứng từ đầu vào của hàng hóa (Nếu là hộ kê khai).",
-      "Kê khai mẫu 01/CNKD nộp trước ngày cuối cùng của quý."
+      "Kê khai mẫu 01/CNKD nộp trước ngày cuối cùng của quý đối với các giao dịch không thanh toán qua sàn."
     ],
-    warning: "Nếu cố tình không khai, cơ quan thuế có thể truy quét sao kê liên thông ngân hàng và sàn bất luận thời gian nào từ năm 2021 trở đi, mức phạt trốn thuế là gấp 1 đến 3 lần số thuế trốn.",
+    warning: "Nếu thuộc diện sàn không thanh toán qua sàn mà cố tình không khai, cơ quan thuế có thể truy quét sao kê liên thông ngân hàng bất luận thời gian nào từ năm 2021 trở đi, mức phạt trốn thuế là gấp 1 đến 3 lần số thuế trốn.",
     steps: [
-      "Bước 1: Tải báo cáo doanh thu trên sàn (Chọn mục Thu nhập -> Báo cáo doanh thu sàn). Doanh thu tính thuế là dòng 'Doanh thu sản phẩm thô' chưa trừ bất kỳ phí gì.",
-      "Bước 2: Xác định thuế suất ngành bán lẻ: 1% Thuế giá trị gia tăng (GTGT) + 0.5% Thuế thu nhập cá nhân (TNCN) = Tổng 1.5% doanh thu.",
-      "Bước 3: Gửi tờ khai 01/CNKD qua trang Thuedientu.gdt.gov.vn thông qua mã số thuế cá nhân kinh doanh.",
-      "Bước 4: Nộp tiền vào tài khoản kho bạc của Chi cục Thuế quản lý trực thuộc."
+      "Bước 1: Phân loại: Nếu có thanh toán qua sàn (Shopee, TikTok Shop, Lazada), sàn sẽ thu nộp thuế dùm trực tiếp. Người bán được MIỄN thủ tục tự khai thuế hàng tháng, quý và quyết toán năm.",
+      "Bước 2: Nếu không thanh toán qua sàn (giao dịch COD ngoài, chuyển khoản lẻ ngoài): Tải báo cáo doanh thu thô chưa trừ bất kỳ phí gì.",
+      "Bước 3: Xác định thuế suất ngành bán lẻ: 1% Thuế giá trị gia tăng (GTGT) + 0.5% Thuế thu nhập cá nhân (TNCN) = Tổng 1.5% doanh thu.",
+      "Bước 4: Gửi tờ khai 01/CNKD qua trang Thuedientu.gdt.gov.vn thông qua mã số thuế cá nhân kinh doanh và nộp ngân sách."
     ],
-    content: "Kinh doanh online hiện nay là ưu tiên rà soát số 1 của Tổng cục Thuế. Việc truyền dữ liệu tự động giữa CTCP Shopee, TikTok Việt Nam và cơ quan thuế đã giúp hoàn thiện cơ sở dữ liệu rà soát toàn quốc. Bạn cần chủ động kê khai nộp thuế kinh doanh cá nhân thay vì đợi thông báo triệu tập.",
+    content: "Luật pháp phân định rõ: các giao dịch TMĐT có thanh toán qua sàn (như Shopee, TikTok Shop có dùng cổng thanh toán tích hợp của sàn, ví, thẻ...) thì sàn sẽ khấu trừ, kê khai và nộp thuế thay, người bán không cần khai thuế hàng tháng/quý hay quyết toán cuối năm. Ngược lại, các giao dịch không thanh toán qua sàn (giao dịch tự do, thỏa thuận COD ngoài hệ thống cổng thanh toán, chuyển khoản trực tiếp) thì người bán bắt buộc phải tự thực hiện kê khai thuế theo quy định định kỳ hàng tháng/quý.",
     example: "Bạn có shop bán quần áo trên Shopee, một năm tổng tiền khách hàng thanh toán là 1 tỷ đồng. Sàn giữ lại phí dịch vụ cố định và phí thanh toán 10% (Tức bạn nhận về bank 900 triệu). Số thuế bạn phải đóng vẫn tính trên 1 tỷ đồng: GTGT = 1 tỷ * 1% = 10 triệu; TNCN = 1 tỷ * 0.5% = 5 triệu. Tổng thuế phải nộp là 15 triệu đồng chứ không phải tính trên 900 triệu."
   },
   {
     id: "huongdan-doanhthunhabox",
     category: "CTTS",
-    title: "Cho thuê nhà trên 100 triệu/năm có phải xuất hóa đơn tài chính cho đối tác?",
+    title: "Cho thuê nhà trên 200 triệu/năm có phải xuất hóa đơn tài chính cho đối tác?",
     summary: "Hướng dẫn chi tiết quy trình nộp thuế cho thuê bất động sản và làm thế nào để được cơ quan thuế cấp hóa đơn điện tử bàn giao cho công ty thuê nhà.",
     checklist: [
       "Kiểm tra xem hợp đồng thuê nhà quy định ai nộp thuế.",
       "Khách thuê là công ty thì chủ nhà phải làm thủ tục mua hóa đơn lẻ từng lần phát sinh.",
-      "Doanh thu dưới 100 triệu/năm không có nghĩa vụ nộp thuế nhưng vẫn phải đăng ký nộp thuế trắng."
+      "Doanh thu dưới 200 triệu/năm không có nghĩa vụ nộp thuế nhưng vẫn phải đăng ký nộp thuế trắng nếu cần."
     ],
     warning: "Không tự ý viết hóa đơn tay hoặc thuê công ty ma xuất hộ hóa đơn thuê nhà, điều này có thể dẫn tới rủi ro hóa đơn bất hợp pháp cực kỳ nguy hiểm.",
     steps: [
@@ -325,7 +357,7 @@ export const PRACTICAL_GUIDES_DATA: PracticalGuide[] = [
       "Bước 4: Nộp thuế trực tuyến rồi cầm biên lai quay lại để làm đơn đề nghị cấp hóa đơn lẻ từ cơ quan thuế."
     ],
     content: "Các công ty nước ngoài hoặc tập đoàn lớn luôn yêu cầu có hóa đơn VAT hợp pháp khi thuê nhà làm văn phòng để đưa vào chi phí hợp lý. Vì chủ nhà là cá nhân không thể tự in hóa đơn, nên bắt buộc phải thực hiện thủ tục mua hóa đơn lẻ trực tiếp tại cơ quan quản lý đầu ngành.",
-    example: "Chị Lan cho công ty Nhật Bản thuê nhà giá 20 triệu/tháng. Tổng doanh thu năm là 240 triệu đồng (>100 triệu). Thuế suất cho thuê tài sản là 10% (5% GTGT + 5% TNCN). Chị Lan phải đóng tổng cộng: 240 triệu * 10% = 24 triệu đồng tiền thuế mới được chi cục thuế cấp hóa đơn VAT 20tr/tháng bàn giao cho công ty."
+    example: "Chị Lan cho công ty Nhật Bản thuê nhà giá 20 triệu/tháng. Tổng doanh thu năm là 240 triệu đồng (>200 triệu). Thuế suất cho thuê tài sản là 10% (5% GTGT + 5% TNCN). Chị Lan phải đóng tổng cộng: 240 triệu * 10% = 24 triệu đồng tiền thuế mới được chi cục thuế cấp hóa đơn VAT 20tr/tháng bàn giao cho công ty."
   },
   {
     id: "huongdan-trangthothuekhoan",
@@ -387,7 +419,7 @@ export const QUICK_ANSWER_FAQS: QuickAnswerFAQ[] = [
     id: "faq-q1",
     question: "Bán hàng Shopee doanh thu bao nhiêu thì phải đóng thuế?",
     category: "TMDT",
-    answer: "Chỉ cần tổng doanh thu bán hàng online (bao gồm tất cả các bên, hoặc tổng mức thu nhập cá nhân) vượt quá 100.000.000 đồng trong một năm dương lịch là bạn bắt buộc phải kê khai và nộp thuế GTGT (1%) và thuế TNCN (0.5%), tổng cộng là 1.5% trên doanh thu.",
+    answer: "Chỉ cần tổng doanh thu bán hàng online (bao gồm tất cả các bên, hoặc tổng mức thu nhập cá nhân) vượt quá 200.000.000 đồng trong một năm dương lịch là bạn bắt buộc phải kê khai và nộp thuế GTGT (1%) và thuế TNCN (0.5%), tổng cộng là 1.5% trên doanh thu theo quy định mới áp dụng từ năm 2026. Nếu dưới 200 triệu đồng/năm sẽ được miễn nộp thuế hoàn toàn.",
     relatedGuides: ["huongdan-thuetiktok"]
   },
   {

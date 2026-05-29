@@ -73,14 +73,14 @@ export default function CalculatorTab({
       const vatRate = sectorObj ? sectorObj.vat : 1.0;
       const pitRate = sectorObj ? sectorObj.pit : 0.5;
 
-      const isExempt = calcHkdRevenue <= 200000000;
+      const isExempt = calcHkdRevenue <= 1000000000;
       const totalTax = isExempt ? 0 : (calcHkdRevenue * totalRate) / 100;
       const vatAmount = isExempt ? 0 : (calcHkdRevenue * vatRate) / 100;
       const pitAmount = isExempt ? 0 : (calcHkdRevenue * pitRate) / 100;
 
       let explanationText = "";
       if (isExempt) {
-        explanationText = "Tổng doanh thu kinh doanh trong năm dương lịch từ 200.000.000đ trở xuống thuộc diện MIỄN nộp thuế GTGT & TNCN (quy định mới nhất áp dụng từ năm 2026).";
+        explanationText = "Tổng doanh thu kinh doanh trong năm dương lịch từ 1.000.000.000đ trở xuống thuộc diện MIỄN nộp thuế GTGT & TNCN (quy định mới nhất áp dụng từ năm 2026).";
         if (calcHkdPlatformPayment === "yes") {
           explanationText += " Đặc biệt, nhờ thanh toán qua sàn TMĐT tự động kê khai thuế thay (0đ do dưới ngưỡng), bạn hoàn toàn không phải làm thủ tục đăng ký nộp tờ khai quý/năm.";
         }
@@ -102,15 +102,15 @@ export default function CalculatorTab({
       };
     } else if (calcType === "rent") {
       const totalRevenue = calcRentMonthly * calcRentMonths;
-      const isExempt = totalRevenue <= 200000000;
+      const isExempt = totalRevenue <= 1000000000;
       const totalTax = isExempt ? 0 : totalRevenue * 0.10; // 5% GTGT + 5% TNCN
       return {
         isExempt,
         totalRevenue,
         totalTax,
         explanation: isExempt 
-          ? "Do doanh thu cho thuê cả năm dưới 200 triệu đồng, bạn được miễn nộp thuế theo luật định mới từ năm 2026. Lưu ý vẫn nộp tờ khai kê khai đầy đủ."
-          : `Tổng doanh thu năm là ${totalRevenue.toLocaleString()}đ (vượt ngưỡng 200tr), áp mức thuế suất cho thuê tài sản 10% (5% GTGT + 5% TNCN).`
+          ? "Do doanh thu cho thuê cả năm dưới 1 tỷ đồng, bạn được miễn nộp thuế theo luật định mới từ năm 2026. Lưu ý vẫn nộp tờ khai kê khai đầy đủ."
+          : `Tổng doanh thu năm là ${totalRevenue.toLocaleString()}đ (vượt ngưỡng 1 tỷ), áp mức thuế suất cho thuê tài sản 10% (5% GTGT + 5% TNCN).`
       };
     } else if (calcType === "corporate") {
       const revenue = calcCorpRevenue;
@@ -188,19 +188,19 @@ export default function CalculatorTab({
         <div className="flex flex-wrap gap-2 pt-1 text-xs">
           {[
             {
-              label: "🏪 1. Shop TikTok Bán Quần Áo (Doanh thu 500 Triệu/năm)",
+              label: "🏪 1. Shop TikTok Bán Quần Áo (Doanh thu 1.5 Tỷ/năm - Chịu thuế)",
               action: () => {
                 setCalcType("hkd");
                 setCalcHkdSector("PP"); // Phân phối hàng hoá
-                setCalcHkdRevenue(500000000);
+                setCalcHkdRevenue(1500000000);
               }
             },
             {
-              label: "🏢 2. Hộ Gia Đình Mở Quán Ăn (Doanh thu 200 Triệu/năm)",
+              label: "🏢 2. Hộ Gia Đình Mở Quán Ăn (Doanh thu 600 Triệu/năm - Miễn thuế dưới 1 tỷ)",
               action: () => {
                 setCalcType("hkd");
                 setCalcHkdSector("AH"); // Ăn uống (Thương mại dịch vụ ăn uống)
-                setCalcHkdRevenue(200000000);
+                setCalcHkdRevenue(600000000);
               }
             },
             {

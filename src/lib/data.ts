@@ -29,15 +29,15 @@ export const SERVICES_DATA: ServiceDetail[] = [
     faq: [
       { q: "Lệ phí đăng ký hộ kinh doanh từ năm 2026 quy định thế nào?", a: "Theo Thông tư 152/2025/TT-BTC, lệ phí đăng ký thành lập mới hộ kinh doanh ghi nhận là 100.000 đồng/lần khi làm bản giấy trực tiếp, nhưng được MIỄN 100% khi thực hiện qua mạng điện tử (online)." },
       { q: "Hộ kinh doanh có bắt buộc khắc dấu tròn không?", a: "Không, hộ kinh doanh không có tư cách pháp nhân nên không dùng con dấu tròn pháp lý của Bộ Công An, mà chỉ dùng con dấu vuông của hộ chứa Mã số thuế, Tên hộ, Địa chỉ để giao dịch hay xuất hóa đơn." },
-      { q: "Mở hộ kinh doanh xong chưa hoạt động có phải nộp thuế không?", a: "Trong vòng 30 ngày kể từ ngày cấp giấy phép, bạn phải nộp tờ khai lệ phí môn bài. Trách nhiệm nộp thuế chỉ phát sinh khi có doanh thu thực tế và vượt ngưỡng miễn thuế 200 triệu đồng/năm." }
+      { q: "Mở hộ kinh doanh xong chưa hoạt động có phải nộp thuế không?", a: "Trong vòng 30 ngày kể từ ngày cấp giấy phép, bạn phải nộp tờ khai lệ phí môn bài. Trách nhiệm nộp thuế chỉ phát sinh khi có doanh thu thực tế và vượt ngưỡng miễn thuế 1 tỷ đồng/năm." }
     ]
   },
   {
     id: "thue-kekhai-hkd",
     title: "Dịch vụ Kê Khai Thuế theo Thông tư 88",
     group: "HKD",
-    shortDesc: "Xây dựng hệ thống sổ sách kế toán mẫu, lập và nộp tờ khai thuế điện tử theo Thông tư 88/2021/TT-BTC chuyên nghiệp thay thế hoàn toàn cho thuế khoán bị bãi bỏ.",
-    targetUser: "Hộ kinh doanh bắt buộc chuyển từ phương pháp thuế khoán sang kê khai sổ sách kế toán từ ngày 01/01/2026.",
+    shortDesc: "Xây dựng hệ thống sổ sách kế toán mẫu, lập và nộp tờ khai thuế điện tử theo Thông tư 88/2021/TT-BTC chuyên nghiệp nhằm thay thế hoàn toàn cho thuế khoán, vì tất cả hộ khoán đều bắt buộc phải chuyển sang kê khai từ ngày 01/01/2026.",
+    targetUser: "Hộ kinh doanh bắt buộc chuyển từ phương pháp thuế khoán sang kê khai sổ sách kế toán từ ngày 01/01/2026 theo quy định mới.",
     documentsNeeded: [
       "Giấy đăng ký kinh doanh và mã số thuế hộ.",
       "Bộ hóa đơn VAT đầu ra và hóa đơn, chứng từ mua hàng đầu vào.",
@@ -51,16 +51,16 @@ export const SERVICES_DATA: ServiceDetail[] = [
     ],
     duration: "Thực hiện định kỳ hàng quý hoặc đại diện xử lý trong 7 ngày",
     faq: [
-      { q: "Hội kinh doanh kê khai có bắt buộc không?", a: "Từ ngày 01/01/2026, phương pháp thuế khoán đã chính thức bãi bỏ hoàn toàn cho các hộ kinh doanh. Tất cả các hộ kinh doanh phát sinh buộc phải áp dụng phương pháp Kê khai theo Thông tư 88, có mở đủ 5 loại sổ kế toán và sử dụng hoá đơn điện tử." },
-      { q: "Doanh thu dưới bao nhiêu thì được miễn nộp thuế?", a: "Theo quy định mới nhất từ năm 2026, doanh thu kinh doanh dưới 200 triệu đồng/năm thuộc diện miễn thuế GTGT và thuế TNCN (trước đây là dưới 100 triệu đồng/năm)." }
+      { q: "Hộ kinh doanh kê khai có bắt buộc không?", a: "Quy định bắt buộc tuyệt đối. Từ ngày 01/01/2026, phương pháp thuế khoán đã chính thức bãi bỏ hoàn toàn, tất cả các hộ kinh doanh phát sinh kinh doanh (kể cả hộ khoán trước đây) buộc phải thực hiện kê khai thuế, áp dụng chế độ kế toán theo Thông tư 88, mở đủ 5 loại sổ sách kế toán và sử dụng hoá đơn điện tử." },
+      { q: "Doanh thu dưới bao nhiêu thì được miễn nộp thuế?", a: "Theo quy định mới nhất từ năm 2026, doanh thu kinh doanh dưới 1 tỷ đồng/năm thuộc diện miễn thuế GTGT và thuế TNCN (trước đây là dưới 100 triệu đồng/năm)." }
     ]
   },
   {
     id: "hddt-hkd",
     title: "Mua & Xuất hóa đơn hóa điện tử",
     group: "HKD",
-    shortDesc: "Kích hoạt hóa đơn điện tử có mã của cơ quan thuế, mua hóa đơn lẻ tại cơ quan thuế cho hộ khoán.",
-    targetUser: "Các hộ kinh doanh cần xuất hóa đơn tài chính bàn giao cho khách hàng doanh nghiệp hoặc dự thầu.",
+    shortDesc: "Kích hoạt hóa đơn điện tử có mã của cơ quan thuế, mua hóa đơn lẻ tại cơ quan thuế cho tất cả hộ khoán phải kê khai.",
+    targetUser: "Các hộ kinh doanh bắt buộc tự kê khai thuế từ 01/01/2026 cần xuất hóa đơn tài chính bàn giao cho khách hàng doanh nghiệp hoặc dự thầu.",
     documentsNeeded: [
       "CCCD chủ hộ và chữ ký số token hoặc chữ ký số từ xa.",
       "Hợp đồng kinh tế chứng minh hoạt động bán hàng dịch vụ.",
@@ -74,7 +74,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
     ],
     duration: "24 giờ để kích hoạt xong",
     faq: [
-      { q: "Hộ khoán có tự xuất hóa đơn điện tử liên tục được không?", a: "Không. Hộ khoán muốn xuất hóa đơn phải nộp đơn đề nghị cấp hóa đơn điện tử theo từng lần phát sinh lên Chi cục Thuế và nộp thuế trước 1.5% - 7% tùy ngành nghề." }
+      { q: "Hộ khoán có tự xuất hóa đơn điện tử liên tục được không?", a: "Từ ngày 01/01/2026, tất cả hộ khoán bắt buộc phải chuyển sang kê khai thuế. Hộ kê khai muốn xuất hóa đơn phải gửi tờ khai nộp thuế đúng hạn, nộp đơn đề nghị cấp hóa đơn điện tử theo từng lần phát sinh lên Chi cục Thuế và nộp thuế đầy đủ." }
     ]
   },
   {
@@ -153,7 +153,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
     title: "Thuế cho thuê Nhà, Mặt bằng, Căn hộ",
     group: "CTTS",
     shortDesc: "Kê khai thuế cho thuê nhà trọn gói, xử lý các hồ sơ cho công ty thuê cần xuất hóa đơn tài chính khấu trừ.",
-    targetUser: "Chủ hộ có nhà cho thuê làm văn phòng, thuê mặt bằng kinh doanh, chung cư, phòng trọ doanh thu trên 200tr/năm.",
+    targetUser: "Chủ hộ có nhà cho thuê làm văn phòng, thuê mặt bằng kinh doanh, chung cư, phòng trọ doanh thu trên 1 tỷ/năm.",
     documentsNeeded: [
       "Hợp đồng cho thuê tài sản (hợp đồng thuê nhà).",
       "Giấy chứng nhận quyền sở hữu nhà (Sổ đỏ, Sổ hồng) bản photo.",
@@ -167,7 +167,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
     ],
     duration: "2 - 3 ngày làm việc",
     faq: [
-      { q: "Nhà cho thuê dưới 200 triệu/năm có phải nộp thuế không?", a: "Không, miễn thuế hoàn toàn cả GTGT và TNCN từ năm 2026. Nhưng nếu có từ 2 căn trở lên, tổng doanh thu cộng dồn vượt 200 triệu/năm vẫn phải đóng thuế cho toàn bộ." },
+      { q: "Nhà cho thuê dưới 1 tỷ/năm có phải nộp thuế không?", a: "Không, miễn thuế hoàn toàn cả GTGT và TNCN từ năm 2026. Nhưng nếu có từ 2 căn trở lên, tổng doanh thu cộng dồn vượt 1 tỷ/năm vẫn phải đóng thuế cho toàn bộ." },
       { q: "Giá cho thuê nhà tính thuế gồm phí quản lý hay chưa?", a: "Tính trên tổng số tiền ghi trên hợp đồng kinh tế nhận về thực tế." }
     ]
   },
@@ -355,7 +355,7 @@ export const LEGAL_DOCS_DATA: LegalDoc[] = [
     field: "Hộ kinh doanh & Cá nhân",
     summary: "Vavan bản xương sống hướng dẫn cách tính thuế của tất cả hộ kinh doanh, cá nhân bán hàng online, thương mại điện tử và cho thuê nhà.",
     contentBullets: [
-      "Quy định rõ cá nhân có doanh thu từ kinh doanh dưới 200 triệu đồng/năm (theo cập nhật mới nhất) thuộc diện không phải nộp thuế GTGT và TNCN.",
+      "Quy định rõ cá nhân có doanh thu từ kinh doanh dưới 1 tỷ đồng/năm (theo cập nhật mới nhất) thuộc diện không phải nộp thuế GTGT và TNCN.",
       "Chi tiết biểu tỷ lệ thuế GTGT và TNCN theo từng loại hình ngành nghề (Thương mại: GTGT 1% - TNCN 0.5%; Dịch vụ: GTGT 5% - TNCN 2%...).",
       "Quy định nghĩa vụ kê khai của Sàn thương mại điện tử và tổ chức trung gian nộp thay thuế."
     ],
@@ -434,12 +434,12 @@ export const PRACTICAL_GUIDES_DATA: PracticalGuide[] = [
   {
     id: "huongdan-doanhthunhabox",
     category: "CTTS",
-    title: "Cho thuê nhà trên 200 triệu/năm có phải xuất hóa đơn tài chính cho đối tác?",
+    title: "Cho thuê nhà trên 1 tỷ/năm có phải xuất hóa đơn tài chính cho đối tác?",
     summary: "Hướng dẫn chi tiết quy trình nộp thuế cho thuê bất động sản và làm thế nào để được cơ quan thuế cấp hóa đơn điện tử bàn giao cho công ty thuê nhà.",
     checklist: [
       "Kiểm tra xem hợp đồng thuê nhà quy định ai nộp thuế.",
       "Khách thuê là công ty thì chủ nhà phải làm thủ tục mua hóa đơn lẻ từng lần phát sinh.",
-      "Doanh thu dưới 200 triệu/năm không có nghĩa vụ nộp thuế nhưng vẫn phải đăng ký nộp thuế trắng nếu cần."
+      "Doanh thu dưới 1 tỷ/năm không có nghĩa vụ nộp thuế nhưng vẫn phải đăng ký nộp thuế trắng nếu cần."
     ],
     warning: "Không tự ý viết hóa đơn tay hoặc thuê công ty ma xuất hộ hóa đơn thuê nhà, điều này có thể dẫn tới rủi ro hóa đơn bất hợp pháp cực kỳ nguy hiểm.",
     steps: [
@@ -449,27 +449,27 @@ export const PRACTICAL_GUIDES_DATA: PracticalGuide[] = [
       "Bước 4: Nộp thuế trực tuyến rồi cầm biên lai quay lại để làm đơn đề nghị cấp hóa đơn lẻ từ cơ quan thuế."
     ],
     content: "Các công ty nước ngoài hoặc tập đoàn lớn luôn yêu cầu có hóa đơn VAT hợp pháp khi thuê nhà làm văn phòng để đưa vào chi phí hợp lý. Vì chủ nhà là cá nhân không thể tự in hóa đơn, nên bắt buộc phải thực hiện thủ tục mua hóa đơn lẻ trực tiếp tại cơ quan quản lý đầu ngành.",
-    example: "Chị Lan cho công ty Nhật Bản thuê nhà giá 20 triệu/tháng. Tổng doanh thu năm là 240 triệu đồng (>200 triệu). Thuế suất cho thuê tài sản là 10% (5% GTGT + 5% TNCN). Chị Lan phải đóng tổng cộng: 240 triệu * 10% = 24 triệu đồng tiền thuế mới được chi cục thuế cấp hóa đơn VAT 20tr/tháng bàn giao cho công ty."
+    example: "Chị Lan cho công ty Nhật Bản thuê biệt thự giá 95 triệu/tháng. Tổng doanh thu năm là 1.14 tỷ đồng (>1 tỷ). Thuế suất cho thuê tài sản là 10% (5% GTGT + 5% TNCN). Chị Lan phải đóng tổng cộng: 1.14 tỷ * 10% = 114 triệu đồng tiền thuế mới được chi cục thuế cấp hóa đơn VAT lẻ bàn giao cho công ty."
   },
   {
     id: "huongdan-trangthothuekhoan",
     category: "HKD",
-    title: "Hộ kinh doanh đổi sang phương pháp kê khai: Lợi và hại gì?",
-    summary: "Rà soát luật thuế Thông tư 88 và so sánh chi tiết chi phí nộp thuế khoán rảnh tay so với thuế kê khai sổ sách.",
+    title: "Tất cả Hộ khoán bắt buộc kê khai thuế từ 01/01/2026: Hướng dẫn gỡ rối",
+    summary: "Rà soát quy định bắt buộc mới của Tổng cục Thuế: Xóa bỏ hoàn toàn phương pháp thuế khoán không kê khai, tất cả hộ kinh doanh đều phải thực hiện kê khai kế toán Thông tư 88.",
     checklist: [
-      "Thuế khoán phù hợp kinh doanh bán lẻ vãng lai diện tích nhỏ.",
-      "Thuế kê khai phù hợp hộ bán sỉ, chuỗi cửa hàng, cần chứng minh doanh thu đầu vào xuất hóa đơn VAT đầu ra.",
-      "Thuế phương pháp kê khai yêu cầu phải mở sổ kế toán và thuê dịch vụ báo cáo hàng tháng."
+      "Từ ngày 01/01/2026, kể cả hộ kinh doanh bán lẻ vãng lai quy mô nhỏ trước đây áp dụng thuế khoán cũng bắt buộc phải kê khai.",
+      "Thực hiện mở 5 loại sổ sách kế toán cốt lõi và lưu trữ đầy đủ hóa đơn chứng từ mua hàng hóa đầu vào.",
+      "Kê khai định kỳ tờ khai mẫu 01/CNKD hàng quý để tránh bị xử phạt hành chính mức cao."
     ],
-    warning: "Nếu hộ kê khai không lưu chứng từ mua hàng đầu vào, chi cục thuế sẽ ấn định tỷ lệ chi phí dẫn đến số thuế đóng cao hơn nhiều.",
+    warning: "Hành vi không thực hiện kê khai thuế khi hoạt động từ ngày 01/01/2026 sẽ bị xếp vào diện trốn thuế hoặc bị áp dụng mức xử phạt hành chính tối đa từ Chi cục Thuế.",
     steps: [
-      "Bước 1: Làm hồ sơ thông báo chuyển đổi phương pháp tính thuế nộp lên Chi cục Thuế trước quý phát sinh.",
-      "Bước 2: Mua chữ ký số (Token/Cloud) riêng cho HKD và kích hoạt tài khoản xuất hóa đơn có mã.",
-      "Bước 3: Thuê đơn vị kế toán đại lý thuế để lập 4 quyển sổ kế toán mẫu Thông tư 88.",
-      "Bước 4: Báo cáo định kỳ tờ khai thuế mẫu 01/CNKD mỗi quý một lần."
+      "Bước 1: Làm thủ tục đăng ký chuyển đổi phương pháp kê khai thuế trực tiếp trên hệ thống thuế điện tử.",
+      "Bước 2: Trang bị và chữ ký số (Token/Cloud) riêng cho HKD và kích hoạt hóa đơn điện tử.",
+      "Bước 3: Ghi chép và lưu trữ đầy đủ 5 mẫu sổ kế toán tiêu chuẩn theo Thông tư 88/2021/TT-BTC.",
+      "Bước 4: Nộp tờ khai thuế định kỳ hàng quý đúng thời hạn quy định pháp luật."
     ],
-    content: "Phương pháp kê khai giúp mở rộng quy mô, được ký kết các hợp đồng kinh tế lớn with các công ty. Đây chính là bước chuyển giao chuyên nghiệp trước khi nâng cấp thành lập Doanh nghiệp tư nhân hoặc Công ty TNHH.",
-    example: "Một hộ kinh doanh phân phối linh kiện điện tử doanh thu 5 tỷ/năm. Nếu nộp thuế khoán cán bộ thuế có thể áp doanh thu cực kì cao hoặc kiểm tra kho hàng. Khi chuyển sang kê khai sổ sách, hộ có hóa đơn đầu vào linh kiện từ công ty nhập khẩu nên đóng thuế chính xác 1.5% trên doanh thu và bảo vệ an toàn kho hàng."
+    content: "Luật Thuế mới nhất quy định thống nhất loại bỏ thuế khoán rảnh tay đối với mọi hộ kinh doanh có phát sinh hoạt động từ 01/01/2026. Việc tự kê khai sổ sách kế toán vừa là nghĩa vụ bắt buộc, vừa giúp hộ kinh doanh quản lý dòng tiền tốt hơn, minh bạch hóa dữ liệu giao dịch.",
+    example: "Một hộ kinh doanh phân phối linh kiện điện tử từng áp dụng thuế khoán được cán bộ thuế ấn định định mức. Từ 01/01/2026, hộ buộc phải chuyển hẳn sang kê khai sổ sách theo Thông tư 88, mở sổ tiền mặt, sổ doanh thu và nộp tờ khai quý đúng hạn, đảm bảo hoạt động hợp pháp và không bị dính phạt hành chính."
   },
   {
     id: "huongdan-doanhnghiep-sme",
@@ -615,7 +615,7 @@ export const QUICK_ANSWER_FAQS: QuickAnswerFAQ[] = [
     id: "faq-q1",
     question: "Bán hàng Shopee doanh thu bao nhiêu thì phải đóng thuế?",
     category: "TMDT",
-    answer: "Chỉ cần tổng doanh thu bán hàng online (bao gồm tất cả các bên, hoặc tổng mức thu nhập cá nhân) vượt quá 200.000.000 đồng trong một năm dương lịch là bạn bắt buộc phải kê khai và nộp thuế GTGT (1%) và thuế TNCN (0.5%), tổng cộng là 1.5% trên doanh thu theo quy định mới áp dụng từ năm 2026. Nếu dưới 200 triệu đồng/năm sẽ được miễn nộp thuế hoàn toàn.",
+    answer: "Chỉ cần tổng doanh thu bán hàng online (bao gồm tất cả các bên, hoặc tổng mức thu nhập cá nhân) vượt quá 1.000.000.000 đồng trong một năm dương lịch là bạn bắt buộc phải kê khai và nộp thuế GTGT (1%) và thuế TNCN (0.5%), tổng cộng là 1.5% trên doanh thu theo quy định mới áp dụng từ năm 2026. Nếu dưới 1 tỷ đồng/năm sẽ được miễn nộp thuế hoàn toàn.",
     relatedGuides: ["huongdan-thuetiktok"]
   },
   {

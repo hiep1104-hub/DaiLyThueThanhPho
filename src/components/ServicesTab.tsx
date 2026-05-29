@@ -323,7 +323,7 @@ export default function ServicesTab({
                 Đơn Vị Đại Lý Thuế Được Cấp Phép Chính Thức 
               </h3>
               <p className="text-xs text-gray-650 leading-relaxed font-semibold">
-                Đại lý Thuế Thành Phố hoạt động theo Giấy phép số <span className="text-[#800020] font-black font-mono">00056/BTC</span> do Tổng Cục Thuế cấp. Chúng tôi có đầy đủ tư cách đại diện người nộp thuế làm việc trực tiếp trước các ban bộ ngành Cục/Chi cục thuế toàn quốc.
+                Đại lý Thuế Thành Phố hoạt động theo Giấy xác nhận đủ điều kiện kinh doanh dịch vụ làm thủ tục về thuế số <span className="text-[#800020] font-black font-mono">02/GXN-TPHCM-KĐT</span> cấp bởi Cục Thuế TP.HCM. Chúng tôi có đầy đủ tư cách đại diện người nộp thuế làm việc trực tiếp trước các ban bộ ngành Cục/Chi cục thuế toàn quốc.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-bold text-gray-750 p-1">
                 <div className="flex items-center gap-2 bg-white p-3 rounded-lg border border-gray-150">
@@ -677,7 +677,7 @@ export default function ServicesTab({
               Đơn Vị Đại Lý Thuế Được Cấp Phép Chính Thức 
             </h3>
             <p className="text-xs text-gray-600 leading-relaxed font-semibold">
-              Đại lý Thuế Thành Phố hoạt động theo Giấy phép số <span className="text-[#800020] font-black font-mono">368/GP-TCT</span> do Tổng Cục Thuế cấp. Chúng tôi có đầy đủ tư cách đại diện người nộp thuế làm việc trực tiếp trước các ban bộ ngành Cục/Chi cục thuế toàn quốc.
+              Đại lý Thuế Thành Phố hoạt động theo Giấy xác nhận đủ điều kiện kinh doanh dịch vụ làm thủ tục về thuế số <span className="text-[#800020] font-black font-mono">02/GXN-TPHCM-KĐT</span> cấp bởi Cục Thuế TP.HCM. Chúng tôi có đầy đủ tư cách đại diện người nộp thuế làm việc trực tiếp trước các ban bộ ngành Cục/Chi cục thuế toàn quốc.
             </p>
             <div className="space-y-2 text-xs font-bold text-gray-700">
               <div className="flex items-center gap-2">
@@ -954,7 +954,7 @@ export default function ServicesTab({
                   "1. Đăng ký tài khoản nộp thuế điện tử trên Thuedientu.gdt.gov.vn.",
                   "2. Kê khai và nộp tờ khai Lệ phí môn bải ban đầu (Hạn chót ngày cuối cùng tháng thành lập).",
                   "3. Nhận miễn lệ phí môn bài năm đầu tiên nếu thành lập mới hoàn toàn.",
-                  "4. Đăng ký định mức nộp thuế khoán (nếu thuộc hộ nghèo, quy mô siêu nhỏ dưới ngưỡng kê khai)."
+                  "4. Chuyển đổi đăng ký phương pháp kê khai thuế theo Thông tư 88 đối với tất cả hộ khoán từ ngày 01/01/2026."
                 ],
                 dn: [
                   "1. Thiết lập hồ sơ thuế ban đầu tại Chi cục thuế quản lý (Cử Kế toán trưởng trực tiếp).",

@@ -41,6 +41,7 @@ import LawsTab from "./components/LawsTab";
 import CalculatorTab from "./components/CalculatorTab";
 import FaqTab from "./components/FaqTab";
 import CasesTab from "./components/CasesTab";
+import { CompanyLogo } from "./components/CompanyLogo";
 
 export default function App() {
   // Navigation & Sub-page States
@@ -148,6 +149,7 @@ export default function App() {
   // Admin dashboard config & persistence
   const [leadsList, setLeadsList] = useState<LeadSubmission[]>([]);
   const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
+  const [showCert, setShowCert] = useState<boolean>(false);
   const [adminSearch, setAdminSearch] = useState<string>("");
   const [isUpdatingLeadId, setIsUpdatingLeadId] = useState<string | null>(null);
 
@@ -266,7 +268,7 @@ export default function App() {
         name: clean.startsWith("03") ? "CÔNG TY TNHH THƯƠNG MẠI SMARTDECOR" : "HỘ KINH DOANH TRẦN THU TRANG",
         owner: clean.startsWith("03") ? "Ông Nguyễn Văn Linh" : "Bà Trần Thu Trang",
         address: clean.startsWith("03") ? "A10-12 Cư xá Phú Lâm B, Phường 13, Quận 6, TP.HCM" : "39 Đỗ Thị Tâm, P. Phú Thọ Hoà, Tân Phú, TP.HCM",
-        bizType: clean.startsWith("03") ? "Doanh nghiệp vừa và nhỏ" : "Hộ kinh doanh nộp thuế khoán",
+        bizType: clean.startsWith("03") ? "Doanh nghiệp vừa và nhỏ" : "Hộ kinh doanh kê khai bắt buộc (từ 01/01/2026)",
         risk: clean.startsWith("03") ? "AN TOÀN" : "XUYÊN SUỐT TRUY THU THUẾ",
         riskDetail: clean.startsWith("03") 
           ? "Hiện chưa ghi nhận rủi ro hóa đơn ảo từ Tổng cục Thuế. Doanh nghiệp cần tiếp tục kê khai đúng hạn định kỳ." 
@@ -331,7 +333,7 @@ export default function App() {
     } catch (err) {
       setChatHistory(prev => [...prev, {
         sender: "bot",
-        text: "Xin lỗi, kết nối mạng tạm thời bị lỗi. Theo luật thuế thực tế đối với hộ kinh doanh/cá nhân, doanh thu từ 200 triệu/năm trở lên có tỷ lệ đóng là 1.5% (Shopee) hoặc 10% (Chung cư thuê) từ ngày 01/01/2026. Bạn hãy gửi số điện thoại tại form liên hệ để tôi gọi lại ngay!",
+        text: "Xin lỗi, kết nối mạng tạm thời bị lỗi. Theo luật thuế thực tế đối với hộ kinh doanh/cá nhân, doanh thu từ 1 tỷ/năm trở lên có tỷ lệ đóng là 1.5% (Shopee) hoặc 10% (Chung cư thuê) từ ngày 01/01/2026. Bạn hãy gửi số điện thoại tại form liên hệ để tôi gọi lại ngay!",
         timestamp: new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })
       }]);
     } finally {
@@ -369,7 +371,8 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-10 md:gap-14 relative z-10">
           
           <div className="space-y-6 max-w-2xl flex flex-col items-center text-center mx-auto lg:mx-0">
-            <div className="space-y-2 w-full animate-fadeIn">
+            
+            <div className="space-y-2 w-full animate-fadeIn hidden sm:block">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-wide leading-[1.1] text-white text-center">
                 ĐẠI LÝ THUẾ{" "}
                 <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
@@ -890,7 +893,7 @@ export default function App() {
                         step: "BƯỚC 1",
                         badge: "1. ƯỚC TÍNH",
                         title: "Ước tính nghĩa vụ thuế",
-                        desc: "Sử dụng Bộ công cụ tính thuế độc quyền ở Phân khu 03 để xác định số thuế khoán hoặc thuế TNCN.",
+                        desc: "Sử dụng Bộ công cụ tính thuế độc quyền ở Phân khu 03 để xác định số thuế kê khai hoặc thuế TNCN.",
                         actionLabel: "Chuyển Sang Tính Thuế ➜",
                         onClick: () => {
                           setActiveTab("tools");
@@ -1027,16 +1030,16 @@ export default function App() {
                         CHỈ THỊ CẤP PHÉP CHÍNH THỨC
                       </span>
                       <h3 className="text-xl md:text-3xl font-black text-[#001F3F] uppercase tracking-tight">
-                        Đại Lý Thuế Được Cấp Phép Tổng Cục Thuế
+                        Đại Lý Thuế Được Cục Thuế TP.HCM Cấp Phép
                       </h3>
                       <p className="text-xs text-gray-650 leading-relaxed font-semibold">
-                        Đại lý Thuế Thành Phố tự hào hoạt động chính thức theo quyết định và Giấy phép hành nghề số <span className="text-[#800020] font-black font-mono">00056/BTC</span> phê chuẩn bởi Bộ Tài Chính & Tổng Cục Thuế.
+                        Đại lý Thuế Thành Phố tự hào hoạt động chính thức theo Giấy xác nhận đủ điều kiện kinh doanh dịch vụ làm thủ tục về thuế số <span className="text-[#800020] font-black font-mono">02/GXN-TPHCM-KĐT</span> phê chuẩn cấp bởi Cục Thuế TP.HCM ngày 29/01/2026.
                       </p>
                     </div>
                     <div className="bg-white border border-amber-300 p-4 rounded-xl flex flex-col items-center shrink-0 shadow-sm border-dashed">
                       <span className="text-amber-500 text-3xl">🛡️</span>
-                      <span className="text-[10px] font-black text-[#001F3F] mt-1 font-mono uppercase">Mã số Đại lý</span>
-                      <span className="text-sm font-black text-[#800020] font-mono">00056/BTC</span>
+                      <span className="text-[10px] font-black text-[#001F3F] mt-1 font-mono uppercase">Số Giấy Xác Nhận</span>
+                      <span className="text-sm font-black text-[#800020] font-mono">02/GXN-TPHCM-KĐT</span>
                     </div>
                   </div>
 
@@ -1063,6 +1066,108 @@ export default function App() {
                       </p>
                     </div>
                   </div>
+                </div>
+
+                {/* Bản Sao Số Hóa Giấy Phép Hành Nghề */}
+                <div className="bg-white border border-gray-250 rounded-3xl p-6 md:p-8 space-y-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="space-y-1 text-left">
+                      <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full">
+                        PHÁP LÝ NGUYÊN BẢN
+                      </span>
+                      <h4 className="font-extrabold text-[#001F3F] text-xs sm:text-sm uppercase tracking-wider">BẢN SAO SỐ HÓA GIẤY PHÉP HÀNH NGHỀ CHÍNH THỨC</h4>
+                      <p className="text-xs text-gray-500 font-medium font-sans leading-relaxed">
+                        Nhấn nút kế bên để kiểm tra Giấy xác nhận đủ điều kiện kinh doanh dịch vụ làm thủ tục về thuế do Cục Thuế TP.HCM phê chuẩn liên kết.
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => setShowCert(!showCert)} 
+                      className="bg-[#001F3F] hover:bg-[#800020] text-amber-200 hover:text-white px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 whitespace-nowrap self-stretch sm:self-auto text-center"
+                    >
+                      {showCert ? "ẨN GIẤY PHÉP ✕" : "XEM GIẤY PHÉP CHI TIẾT 👁️"}
+                    </button>
+                  </div>
+                  
+                  {showCert && (
+                    <div className="border border-neutral-300 p-6 md:p-10 bg-[#FCFAF2] rounded-2xl shadow-inner text-neutral-800 font-serif max-w-4xl mx-auto space-y-6 relative overflow-hidden animate-fadeIn border-double border-4">
+                      {/* Decorative Background Seal overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">
+                        <span className="text-[120px] md:text-[200px] font-black border-8 border-red-600 rounded-full p-10 rotate-12">THUẾ</span>
+                      </div>
+                      
+                      {/* Header block */}
+                      <div className="flex flex-col sm:flex-row justify-between text-center sm:text-left gap-4 pb-4 border-b border-neutral-300 border-dashed text-xs">
+                        <div className="text-center sm:text-left space-y-1">
+                          <div className="font-bold uppercase tracking-wide">CỤC THUẾ</div>
+                          <div className="font-extrabold uppercase tracking-widest text-[#800020]">THUẾ THÀNH PHỐ HỒ CHÍ MINH</div>
+                          <div className="font-mono text-neutral-600 text-[11px] font-sans">Số: 02 /GXN-TPHCM-KĐT</div>
+                        </div>
+                        <div className="text-center sm:text-right space-y-0.5">
+                          <div className="font-extrabold uppercase">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                          <div className="font-bold underline underline-offset-4 tracking-wide text-[12px] pb-1">Độc lập – Tự do – Hạnh phúc</div>
+                          <div className="italic text-neutral-600 font-sans">Thành phố Hồ Chí Minh, ngày 29 tháng 01 năm 2026</div>
+                        </div>
+                      </div>
+                      
+                      {/* Document Title */}
+                      <div className="text-center py-4 space-y-1">
+                        <h2 className="text-md md:text-lg font-extrabold tracking-wide uppercase text-neutral-900 leading-tight">GIẤY XÁC NHẬN</h2>
+                        <h3 className="text-base md:text-md font-extrabold tracking-tight uppercase text-neutral-900 leading-tight">ĐỦ ĐIỀU KIỆN KINH DOANH DỊCH VỤ<br />LÀM THỦ TỤC VỀ THUẾ</h3>
+                        <div className="italic text-neutral-600 font-sans text-xs">Cấp lần đầu</div>
+                        <div className="w-24 h-0.5 bg-neutral-400 mx-auto mt-2"></div>
+                      </div>
+                      
+                      {/* Document content body */}
+                      <div className="space-y-3.5 text-xs text-neutral-800 leading-relaxed font-serif text-left pl-2">
+                        <p>
+                          <strong className="font-sans font-medium text-neutral-700">Đại lý thuế (tên doanh nghiệp):</strong> <span className="font-extrabold text-neutral-900 uppercase">CÔNG TY TNHH ĐẠI LÝ THUẾ THÀNH PHỐ</span>
+                        </p>
+                        <p>
+                          <strong className="font-sans font-medium text-neutral-700">Mã số thuế:</strong> <span className="font-mono font-extrabold text-neutral-900">0319286272</span>
+                        </p>
+                        <p>
+                          <strong className="font-sans font-medium text-neutral-700">Địa chỉ:</strong> <span className="font-semibold text-neutral-900 font-sans">39 Đỗ Thị Tâm, Phường Phú Thọ Hòa, TP Hồ Chí Minh</span>
+                        </p>
+                        <p>
+                          <strong className="font-sans font-medium text-neutral-700">Đủ điều kiện cung cấp các dịch vụ:</strong> <span className="text-neutral-900 italic font-semibold">Cung cấp các dịch vụ về thuế và dịch vụ kế toán cho doanh nghiệp siêu nhỏ, kể từ ngày 29 tháng 01 năm 2026.</span>
+                        </p>
+                        <p className="pt-2 text-justify border-t border-neutral-350 border-dotted">
+                          <span className="uppercase font-semibold text-neutral-900">CÔNG TY TNHH ĐẠI LÝ THUẾ THÀNH PHỐ</span> có trách nhiệm thực hiện đúng các quy định của Luật Quản lý thuế, Thông tư số 10/2021/TT-BTC ngày 26/01/2021 của Bộ Tài chính hướng dẫn quản lý hành nghề dịch vụ làm thủ tục về thuế.
+                        </p>
+                      </div>
+                      
+                      {/* Document Sign-off / Footer signatures */}
+                      <div className="flex flex-col sm:flex-row justify-between pt-6 text-xs gap-6 text-left border-t border-neutral-300 border-dashed">
+                        {/* Recipients Column */}
+                        <div className="space-y-1 font-serif text-[11px] text-neutral-600 border border-neutral-200 p-2.5 rounded bg-neutral-100/35 self-start">
+                          <div className="font-bold underline uppercase text-neutral-700 font-sans">Nơi nhận:</div>
+                          <div>- CÔNG TY TNHH ĐẠI LÝ THUẾ THÀNH PHỐ;</div>
+                          <div>- Thuế cơ sở 15 Thành phố Hồ Chí Minh;</div>
+                          <div>- Lưu: VT.</div>
+                        </div>
+                        
+                        {/* Signature block with red stamp simulation */}
+                        <div className="text-center relative pr-4 min-w-[200px] flex flex-col items-center">
+                          <div className="font-bold uppercase text-neutral-800 text-[11.5px]">KT. TRƯỞNG THUẾ THÀNH PHỐ</div>
+                          <div className="font-extrabold uppercase text-neutral-950 text-[11.5px] pb-12">PHÓ TRƯỞNG THUẾ THÀNH PHỐ</div>
+                          
+                          {/* HTML Simulated Red Seal */}
+                          <div className="absolute right-4 bottom-1 w-24 h-24 border-2 border-red-500/80 rounded-full flex flex-col items-center justify-center p-1 text-center font-sans uppercase font-bold text-[7px] leading-tight text-red-500/90 tracking-tighter opacity-70 select-none scale-105 rotate-[-8deg] pointer-events-none bg-red-50/10 shadow-sm border-double border-4">
+                            <span className="text-[6.5px] font-extrabold pb-0.5 border-b border-red-400">C.O.N.G.H.O.A</span>
+                            <span className="font-black text-[7px] text-red-600">THUẾ THÀNH PHỐ</span>
+                            <span className="font-extrabold text-[7.5px] text-red-600 whitespace-nowrap">HỒ CHÍ MINH</span>
+                            <span className="text-[6px] font-light mt-0.5 font-mono text-neutral-500">Ký ngày 29/01/2026</span>
+                          </div>
+                          
+                          {/* Signature Line */}
+                          <div className="italic font-sans text-neutral-600 relative z-10 pt-6">
+                            <span className="text-blue-500 opacity-65 text-xl font-signature block -rotate-6 tracking-wide drop-shadow-sm pointer-events-none select-none h-6">Hiển</span>
+                            <div className="mt-4 font-bold text-neutral-900 font-sans text-xs pt-1 border-t border-neutral-300 inline-block">Giang Văn Hiển</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Quy trình bảo mật tuyệt mật */}
@@ -1374,7 +1479,7 @@ export default function App() {
                 <span className="bg-[#800020] text-white rounded-lg px-2.5 py-1 text-xs font-mono">02</span>
                 Phần Mềm Tự Tính Toán Thuế Thực Tế
               </h2>
-              <p className="text-xs text-gray-500 mt-1 font-semibold font-sans">Tính nhanh nghĩa vụ thuế doanh thu sỉ lẻ, thuế khoán, thuế thuê tài sản và nợ phạt chậm nộp hành chính.</p>
+              <p className="text-xs text-gray-500 mt-1 font-semibold font-sans">Tính nhanh nghĩa vụ thuế doanh thu sỉ lẻ, thuế kê khai hộ kinh doanh (áp dụng bắt buộc từ 01/01/2026), thuế thuê tài sản và nợ phạt chậm nộp hành chính.</p>
             </div>
             <CalculatorTab
               userSegment={userSegment}
@@ -1468,6 +1573,8 @@ export default function App() {
 
       {/* FOOTER */}
       <footer id="main-editorial-footer" className="bg-[#001F3F] text-white border-t border-sky-950 py-10 px-4 md:px-8 shrink-0 mt-auto">
+
+
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-xs text-gray-300 pb-8 border-b border-white/10 text-left font-sans">
           <div className="space-y-3">
             <h4 className="font-extrabold text-amber-300 text-xs sm:text-sm uppercase tracking-wider">TỪ KHÓA TÌM KIẾM HỮU ÍCH</h4>
@@ -1514,12 +1621,9 @@ export default function App() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto pt-6 flex flex-col sm:flex-row justify-between items-center text-[12px] text-gray-400 gap-4 text-left font-sans font-medium">
-          <div className="leading-relaxed">
-            © 2026 Đại Lý Thuế Thành Phố. Bảo lưu mọi quyền pháp lý. Giấy phép hành nghề số 00056/BTC.
-          </div>
-          <div className="flex gap-4">
-            <span className="hover:text-amber-300 transition-colors cursor-pointer underline decoration-dotted decoration-gray-500" onClick={() => alert("Đại Lý Thuế Thành Phố cam kết bảo mật tuyệt đối 100% mọi thông tin hồ sơ và dữ liệu kinh doanh của quý khách hàng.")}>Chính sách bảo mật của chúng tôi</span>
+        <div className="max-w-7xl mx-auto pt-6 flex flex-col sm:flex-row justify-between items-center text-[12px] text-gray-400 gap-4 text-left font-sans font-medium text-center sm:text-left">
+          <div className="leading-relaxed whitespace-normal break-words max-w-full">
+            © 2026 Đại Lý Thuế Thành Phố. Giấy xác nhận đủ điều kiện kinh doanh dịch vụ làm thủ tục về thuế số 02/GXN-TPHCM-KĐT cấp ngày 29/01/2026 bởi Cục Thuế TP.HCM (Mã số thuế: 0319286272).
           </div>
         </div>
       </footer>

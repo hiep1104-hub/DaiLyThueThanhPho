@@ -94,7 +94,7 @@ export default function LookupTab({
           <Percent size={16} className="text-[#800020]" />
           Biểu tỷ lệ thuế giá trị gia tăng & thu nhập cá nhân theo ngành
         </h3>
-        <p className="text-xs text-gray-500 font-medium pb-1">Bảng chi tiết dựa trên Thông tư 40/2021/TT-BTC áp dụng cho hộ kê khai theo Thông tư 88 & cá nhân kinh doanh online (phương pháp thuế khoán đã bãi bỏ từ 01/01/2026).</p>
+        <p className="text-xs text-gray-500 font-medium pb-1">Bảng chi tiết dựa trên Thông tư 40/2021/TT-BTC áp dụng cho hộ kê khai theo Thông tư 88 & cá nhân kinh doanh online (Tất cả hộ khoán đều bắt buộc phải chuyển sang tự kê khai sổ sách từ ngày 01/01/2026).</p>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse border border-gray-200 text-xs">
             <thead>

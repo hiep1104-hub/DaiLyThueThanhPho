@@ -5,6 +5,86 @@
   --font-serif: "Times New Roman", Times, Baskerville, Georgia, serif;
 }
 
+/* Global Reset to Vietnamese Administrative Clerical 16pt/16px Standard */
 html, body {
   font-family: "Times New Roman", Times, Baskerville, Georgia, serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Overriding typography elements for absolute balance & neatness */
+p, li, td, th, label, input, select, textarea, button, input::placeholder {
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+}
+
+/* Handle span/badge elements clearly while preserving font-mono when configured */
+span:not(.font-mono):not(.text-white):not(.text-amber-400):not(.text-emerald-400) {
+  font-size: 16px !important;
+}
+
+/* Align common utility text sizes to the professional 16px standard */
+.text-xs, .text-sm, .text-\[11px\], .text-\[10px\], .text-\[12px\], .text-\[11\.5px\], .text-\[10\.5px\] {
+  font-size: 16px !important;
+}
+
+/* Structured Typography Headings with Balanced Contrast */
+h1 {
+  font-size: 36px !important;
+  line-height: 1.2 !important;
+}
+
+@media (min-width: 640px) {
+  h1 {
+    font-size: 44px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 48px !important;
+  }
+}
+
+h2, .text-2xl {
+  font-size: 26px !important;
+  font-weight: 800 !important;
+}
+
+h3, .text-xl {
+  font-size: 21px !important;
+  font-weight: 700 !important;
+}
+
+h4, .text-lg {
+  font-size: 19px !important;
+  font-weight: 700 !important;
+}
+
+h5 {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+}
+
+/* Maintain proper spacing on list elements */
+ul, ol {
+  padding-left: 1.25rem;
+}
+
+/* Smooth active focus rings */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #800020 !important;
+}
+
+/* Aesthetic spacing overrides for administrative tables */
+table {
+  width: 100% !important;
+}
+
+th, td {
+  padding: 10px 12px !important;
+  vertical-align: middle;
 }

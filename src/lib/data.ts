@@ -220,6 +220,98 @@ export const SERVICES_DATA: ServiceDetail[] = [
       { q: "Thời hiệu truy thu thuế đối với trốn thuế là bao lâu?", a: "Đối với hành vi trốn thuế chưa đến mức truy cứu trách nhiệm hình sự, thời hạn truy thu thuế là 10 năm kể từ ngày phát sinh vi phạm." },
       { q: "Có giảm mức phạt trốn thuế xuống mức phạt chậm nộp được không?", a: "Có thể nếu chứng minh được sai lầm vô lý không chủ ý, kê khai bổ sung trước khi công bố quyết định thanh tra hành chính." }
     ]
+  },
+  {
+    id: "cuong-che-thue",
+    title: "Gỡ Cưỡng chế nợ thuế & Khôi phục Mã số thuế",
+    group: "XL",
+    shortDesc: "Can thiệp giải tỏa các quyết định cưỡng chế trích tài khoản ngân hàng, quyết định ngừng sử dụng hóa đơn, khôi phục mã số thuế bị đình chỉ để phục hồi khẩn cấp giao dịch của doanh nghiệp.",
+    targetUser: "Doanh nghiệp hoặc cá nhân kinh doanh đang bị cơ quan thuế cưỡng chế trích tài khoản ngân hàng hoặc đình chỉ dùng hóa đơn do nợ thuế quá hạn.",
+    documentsNeeded: [
+      "Quyết định cưỡng chế hành chính về thuế (mẫu 01/CC hoặc tương đương).",
+      "Bảng đối chiếu tình hình thực hiện nghĩa vụ nộp ngân sách nhà nước.",
+      "Đơn đề nghị xin phân kỳ nộp dần tiền nợ thuế (nếu có)."
+    ],
+    processSteps: [
+      "Bước 1: Rà soát tính chính xác của số nợ bị cưỡng chế (kiểm tra sai lệch tờ khai thuế, tiền chậm nộp).",
+      "Bước 2: Lập hồ sơ xin phân kỳ nộp dần nợ thuế (trả góp nợ thuế tối đa 12 tháng) có bảo lãnh của tổ chức tín dụng theo Điều 134 Luật Quản lý Thuế.",
+      "Bước 3: Đại diện làm việc trực tiếp với Đội kiểm tra thuế/Chi cục Thuế sở tại để xin tạm hoãn cưỡng chế ngừng sử dụng hóa đơn.",
+      "Bước 4: Hướng dẫn nộp tiền đợt đầu theo lộ trình cam kết và nhận văn bản chấp thuận khôi phục mã số thuế / chấm dứt hiệu lực cưỡng chế hóa đơn trong vòng 24-48 giờ."
+    ],
+    duration: "2 - 5 ngày làm việc",
+    faq: [
+      { q: "Bị cưỡng chế nợ thuế thì tài khoản ngân hàng bị khóa bao lâu?", a: "Tài khoản ngân hàng sẽ bị phong tỏa cho đến khi doanh nghiệp nộp đủ tiền thuế nợ hoặc có văn bản giải tỏa cưỡng chế chính thức từ Chi cục Thuế gửi cho Ngân hàng." },
+      { q: "Nợ thuế bao lâu thì dính cưỡng chế ngừng sử dụng hóa đơn?", a: "Trường hợp quá 90 ngày kể từ ngày hết thời hạn nộp thuế quy định mà người nộp thuế không tự nguyện nộp, Cơ quan thuế sẽ ban hành quyết định cưỡng chế ngừng sử dụng hóa đơn." }
+    ]
+  },
+  {
+    id: "khoa-hoa-don",
+    title: "Xử lý Thông báo ngừng phát hành & Đình chỉ sử dụng hóa đơn",
+    group: "XL",
+    shortDesc: "Giải trình khôi phục quyền xuất hóa đơn điện tử bị đình chỉ do doanh nghiệp không hoạt động tại địa chỉ đăng ký, hoặc rủi ro hóa đơn từ các doanh nghiệp rủi ro cao bỏ trốn.",
+    targetUser: "Các doanh nghiệp SME nhận thông báo ngừng sử dụng hóa đơn từ chi cục thuế, hoặc bị rà soát giải trình hóa đơn đầu vào bất hợp pháp.",
+    documentsNeeded: [
+      "Thông báo đình chỉ/ngừng sử dụng hóa đơn của Cơ quan Thuế.",
+      "Hồ sơ chứng minh hoạt động thực tế tại trụ sở (Biển hiệu, hợp đồng thuê văn phòng, ảnh chụp và bảng lương nhân viên).",
+      "Bảng kê và chứng từ giải trình chi tiết về nguồn gốc hàng hóa dịch vụ đầu vào bị nghi vấn."
+    ],
+    processSteps: [
+      "Bước 1: Khảo sát hiện trạng trụ sở, làm hồ sơ chứng minh doanh nghiệp hoạt động thực tế theo quy định Luật Doanh nghiệp.",
+      "Bước 2: Soạn hồ sơ giải trình chi tiết về nguồn gốc hàng hóa dịch vụ đầu vào (chứng từ giao nhận, thanh toán qua ngân hàng, hợp đồng kinh tế và chứng từ vận chuyển).",
+      "Bước 3: Đăng ký nộp tờ khai điều chỉnh thông tin đăng ký thuế (Mẫu 08-MST) nếu có sự thay đổi thông tin địa chỉ.",
+      "Bước 4: Đại diện làm việc với Tổ kiểm tra Chi cục Thuế, thực hiện thủ tục xác minh trụ sở và khôi phục trạng thái hoạt động bình thường của hóa đơn trên cổng thông tin hóa đơn điện tử Tổng cục Thuế."
+    ],
+    duration: "3 - 5 ngày làm việc",
+    faq: [
+      { q: "Hóa đơn đầu vào dính công ty bỏ trốn có bị phạt trốn thuế?", a: "Nếu chứng minh được giao dịch phát sinh mua bán có thật, đầy đủ chứng từ chuyển khoản ngân hàng, biên gửi nhận hàng hóa thực tế công ty chỉ bị loại chi phí và không được khấu trừ thuế VAT chứ không bị khép tội trốn thuế." },
+      { q: "Làm thế nào để kiểm tra tính hợp lệ của doanh nghiệp xuất hóa đơn?", a: "Sử dụng cổng tra cứu Trạng thái hóa đơn điện tử của Tổng cục Thuế để kiểm tra xem MST của doanh nghiệp bán có đang hoạt động hay đã tạm ngừng/bỏ trốn." }
+    ]
+  },
+  {
+    id: "giai-trinh-heso-k",
+    title: "Giải trình Cảnh báo Hệ số K (Chênh lệch doanh thu & Hóa đơn)",
+    group: "XL",
+    shortDesc: "Đối chiếu và lập hồ sơ giải trình sai lệch chỉ số K (hệ số vượt ngưỡng hóa đơn điện tử mua vào/bán ra hoặc biên lợi nhuận danh định) trên hệ thống phân tích rủi ro tự động của Tổng cục Thuế.",
+    targetUser: "Doanh nghiệp nhận được quyết định/thông báo rà soát yêu cầu giải trình chênh lệch hệ số K vượt ngưỡng an toàn.",
+    documentsNeeded: [
+      "Công văn yêu cầu giải trình hệ số K từ Cơ quan Thuế.",
+      "Báo cáo chi tiết bảng kê hóa đơn điện tử mua vào, bán ra trong kỳ rà soát.",
+      "Thuyết minh chu kỳ tồn kho, đặc thù sản xuất kinh doanh của ngành hàng."
+    ],
+    processSteps: [
+      "Bước 1: Kết xuất dữ liệu hóa đơn điện tử từ cổng đối soát rủi ro để tính toán chính xác chỉ số K thực tế của doanh nghiệp.",
+      "Bước 2: Phân tích nguyên nhân chênh lệch hệ số K (do lượng hàng tồn kho cao, nhận hóa đơn chậm từ nhà cung cấp, hoặc chu kỳ sản xuất dài ngày).",
+      "Bước 3: Lập bảng kê chi tiết và soạn tờ trình giải trình kỹ thuật thuyết phục, chứng minh các giao dịch đúng bản chất kinh tế thực tế.",
+      "Bước 4: Nộp tờ trình giải trình hệ số K trực tiếp lên Chi cục Thuế để xóa bỏ trạng thái cảnh báo đỏ trên hệ thống rủi ro phân tích."
+    ],
+    duration: "3 - 7 ngày làm việc",
+    faq: [
+      { q: "Hệ số K của doanh nghiệp bao nhiêu là an toàn?", a: "Tùy thuộc vào mã ngành đăng ký kinh doanh. Tổng cục Thuế áp dụng hệ số cảnh báo rủi ro K dựa trên sự bất thường đột biến sơ bộ so với tỷ suất biên lợi nhuận gộp của ngành." },
+      { q: "Quá thời hạn giải trình hệ số K thì bị xử lý thế nào?", a: "Doanh nghiệp có thể bị đưa vào danh sách kiểm tra thuế tại trụ sở, hoặc bị cơ quan thuế tạm dừng truyền nhận dữ liệu hóa đơn điện tử." }
+    ]
+  },
+  {
+    id: "quyet-toan-dn-bhxh",
+    title: "Tối ưu hóa Quyết toán Thuế & Bảo hiểm xã hội Doanh nghiệp",
+    group: "DN",
+    shortDesc: "Đại diện ký tá sổ sách kế toán, dọn dẹp hệ thống sổ sách rác, cân đối dòng lương thông minh để tối ưu hóa mức đóng BHXH và bảo vệ chi phí hợp lý của doanh nghiệp.",
+    targetUser: "Chủ doanh nghiệp SME cần rà quét loại bỏ rủi ro trước khi có quyết định thanh tra thanh toán thực tế, hoặc tối ưu cơ cấu lương đóng bảo hiểm xã hội bắt buộc.",
+    documentsNeeded: [
+      "Báo cáo tài chính, tờ khai quyết toán thuế TNDN, TNCN các năm chưa thanh tra.",
+      "Danh sách lao động đóng Bảo hiểm xã hội và bảng lương thực tế chi trả.",
+      "Hợp đồng lao động, quy chế tài chính nội bộ công ty."
+    ],
+    processSteps: [
+      "Bước 1: Rà soát chênh lệch giữa bảng lương kê khai tính thuế TNDN với bảng lương nộp BHXH để tránh bị cơ quan BHXH phạt liên thông đối chiếu dữ liệu.",
+      "Bước 2: Phục dựng và tối ưu lại cơ cấu lương thông minh (lương cơ bản đóng bảo hiểm xã hội thấp, kết hợp phụ cấp miễn đóng và hỗ trợ chế độ phúc lợi hợp lý).",
+      "Bước 3: Rà soát toàn diện hóa đơn đầu vào đầu ra, dọn dẹp hệ thống sổ sách kế toán, bóc tách rủi ro sẵn sàng đón đoàn thanh tra quyết toán.",
+      "Bước 4: Ký hợp đồng dịch vụ làm việc trực tiếp, thay mặt doanh nghiệp giải trình toàn bộ số liệu quyết toán trước cán bộ cơ quan kiểm tra."
+    ],
+    duration: "Thiết kế lộ trình trong 7-10 ngày, đại diện trọn đời",
+    faq: [
+      { q: "Cơ quan thuế có đối chiếu dữ liệu đóng bảo hiểm xã hội với chi phí lương?", a: "Có, hiện nay hệ thống Tổng cục Thuế và Bảo hiểm xã hội liên thông dữ liệu chặt chẽ. Mọi sự chênh lệch lớn về số người lao động và quỹ lương giữa quyết toán thuế TNCN và biểu mẫu BHXH đều bị tự động cảnh báo kiểm tra." },
+      { q: "Làm thế nào để đưa phụ cấp vào lương mà không phải đóng BHXH?", a: "Cần xây dựng quy chế lương rõ rệt phân tách các khoản phụ cấp đúng Luật Lao động như: phụ cấp đi lại, điện thoại, ăn trưa, hỗ trợ nuôi con nhỏ... các khoản này không tính vào quỹ lương đóng BHXH bắt buộc." }
+    ]
   }
 ];
 
@@ -376,8 +468,112 @@ export const PRACTICAL_GUIDES_DATA: PracticalGuide[] = [
       "Bước 3: Thuê đơn vị kế toán đại lý thuế để lập 4 quyển sổ kế toán mẫu Thông tư 88.",
       "Bước 4: Báo cáo định kỳ tờ khai thuế mẫu 01/CNKD mỗi quý một lần."
     ],
-    content: "Phương pháp kê khai giúp mở rộng quy mô, được ký kết các hợp đồng kinh tế lớn với các công ty. Đây chính là bước chuyển giao chuyên nghiệp trước khi nâng cấp thành lập Doanh nghiệp tư nhân hoặc Công ty TNHH.",
+    content: "Phương pháp kê khai giúp mở rộng quy mô, được ký kết các hợp đồng kinh tế lớn with các công ty. Đây chính là bước chuyển giao chuyên nghiệp trước khi nâng cấp thành lập Doanh nghiệp tư nhân hoặc Công ty TNHH.",
     example: "Một hộ kinh doanh phân phối linh kiện điện tử doanh thu 5 tỷ/năm. Nếu nộp thuế khoán cán bộ thuế có thể áp doanh thu cực kì cao hoặc kiểm tra kho hàng. Khi chuyển sang kê khai sổ sách, hộ có hóa đơn đầu vào linh kiện từ công ty nhập khẩu nên đóng thuế chính xác 1.5% trên doanh thu và bảo vệ an toàn kho hàng."
+  },
+  {
+    id: "huongdan-doanhnghiep-sme",
+    category: "DN",
+    title: "Tối ưu chi phí hợp lý và kiểm soát rủi ro Thuế cho Doanh nghiệp SME",
+    summary: "Cẩm nang cốt lõi dành cho giám đốc điều hành về cách phân bổ chi phí hóa đơn hợp lệ, tránh rủi ro ấn định thuế.",
+    checklist: [
+      "Kiểm tra tính hợp lệ của hóa đơn đầu vào bằng cách rà soát trạng thái hoạt động doanh nghiệp bán trên cổng Tổng cục Thuế.",
+      "Lập quy chế tài chính nội bộ, hợp đồng lao động chặt chẽ để hợp thức hóa chi phí lương, phụ cấp.",
+      "Hóa đơn trên 20 triệu bắt buộc thanh toán không dùng tiền mặt (qua tài khoản ngân hàng đăng ký mẫu II-1 của công ty)."
+    ],
+    warning: "Mua bán vỏ hóa đơn để tăng chi phí khống là hành vi vi phạm hình sự đặc biệt nghiêm trọng. Hãy tập trung tối ưu hóa chi phí thực tế thông qua các chính sách nội bộ và khấu hao tài sản hợp lệ.",
+    steps: [
+      "Bước 1: Thiết lập hệ thống kiểm soát hóa đơn điện tử đầu ra/đầu vào tự động liên kết dữ liệu Tổng cục Thuế.",
+      "Bước 2: Xây dựng quy định thanh toán nội bộ bằng văn bản, chuẩn bị hồ sơ nghiệm thu nghiệm cụ thể cho từng dịch vụ thuê ngoài.",
+      "Bước 3: Thực hiện đối chiếu tờ khai thuế VAT hàng quý khớp với báo cáo báo cáo hóa đơn thực tế sử dụng.",
+      "Bước 4: Tổ chức báo cáo định kỳ thời hạn kê khai nộp thuế để tránh phạt vi phạm hành chính chậm nộp định kỳ quý."
+    ],
+    content: "Quản trị thuế doanh nghiệp thông minh đòi hỏi sự phối hợp chặt chẽ giữa Ban giám đốc và bộ phận kế toán. Việc hiểu rõ ranh giới giữa tối ưu chi phí hợp lý theo Luật thuế TNDN và hành vi trốn thuế giúp doanh nghiệp phát triển bền vững, yên tâm ký kết các hợp đồng quy mô lớn.",
+    example: "Doanh nghiệp dịch vụ công nghệ phát sinh chi phí mua máy tính 500 triệu đồng. Để được tính là chi phí hợp lý hợp lệ được khấu trừ khi tính thuế TNDN, công ty phải có hóa đơn hợp pháp, thanh toán chuyển khoản từ tài khoản công ty và lập biên bản bàn giao tài sản."
+  },
+  {
+    id: "huongdan-cuongche-nothue",
+    category: "DN",
+    title: "Gỡ quyết định Cưỡng chế nợ thuế và khôi phục hoạt động liên tục",
+    summary: "Cẩm nang bóc tách dòng tiền, nộp đơn xin phân kỳ nộp dần nợ thuế tối đa 12 tháng để khẩn cấp mở lại hóa đơn bị đình chỉ.",
+    checklist: [
+      "Xác định chính xác số nợ thuế có đúng với tờ khai thực tế hay bị tính trùng lặp phạt chậm nộp do lỗi chi trả.",
+      "Chuẩn bị thư bảo lãnh nợ thuế của một Ngân hàng uy tín thương mại hoạt động tại Việt Nam.",
+      "Lập cam kết lộ trình nộp dần nợ thuế theo quý hoặc theo tháng cực kỳ chi tiết, mạch lạc.",
+      "Nộp ngay tối thiểu 1/12 tổng số nợ thuế quá hạn trước khi gửi đơn đề nghị xin cứu xét ngừng hóa đơn."
+    ],
+    warning: "Tuyệt đối không sử dụng hóa đơn bất hợp pháp của đơn vị khác khi đang bị cưỡng chế hóa đơn. Việc này có thể dẫn đến khởi tố hình sự về tội mua bán hóa đơn quy định tại Bộ Luật Hình Sự.",
+    steps: [
+      "Bước 1: Rà soát & Đối chiếu: Chủ động liên hệ Đội quản lý nợ của Chi cục Thuế kiểm tra bảng kê nợ chi tiết, bóc tách các khoản chênh lệch phát sinh.",
+      "Bước 2: Chuẩn bị Thư bảo lãnh của Ngân hàng: Thiết lập cam kết bảo lãnh thanh toán nợ thuế quá hạn theo đúng quy định tại Điều 134 Luật Quản lý Thuế.",
+      "Bước 3: Gửi tờ trình đề nghị phân kỳ: Lập tờ khai mẫu số 01/NĐND đề nghị nộp dần tiền nợ thuế kèm lộ trình thanh toán cụ thể tối đa 12 tháng.",
+      "Bước 4: Nhận biên bản thu hồi quyết định: Ngay sau khi ký biên bản cam kết và hoàn thành đóng kỳ đầu, Chi cục kiểm tra sẽ hủy quyết định cưỡng chế truyền hóa đơn từ 24 - 48 giờ."
+    ],
+    content: "Khi dính nợ thuế quá hạn trên 90 ngày, cơ quan thuế áp dụng biện pháp cưỡng chế trích tiền từ tài khoản và đình chỉ hoạt động sử dụng hóa đơn của doanh nghiệp. Để tháo gỡ cấp tốc, biện pháp quy chuẩn và đúng pháp luật nhất là nộp đơn xin phân kỳ thanh toán nộp dần nợ thuế (trả góp tối đa 12 tháng) dưới sự bảo lãnh của ngân hàng thương mại hoạt động hợp pháp.",
+    example: "Công ty Cổ phần Xây dựng Thành Đạt bị nợ thuế TNDN 600 triệu đồng quá hạn 120 ngày, bị dính cưỡng chế ngừng sử dụng hóa đơn dẫn đến đình trệ bàn giao công trình. Đại lý thuế Thành Phố lập tức can thiệp: giúp lập hồ sơ phân kỳ nộp dần 12 tháng (mỗi tháng 50 triệu) có ngân hàng VPBank bảo lãnh. Công ty nộp 50 triệu kỳ đầu tiên, cơ quan thuế ra văn bản thu hồi cưỡng gỡ phong tỏa hóa đơn ngay ngày hôm sau để đơn vị tiếp tục xuất hóa đơn nghiệm thu lấy tiền trả nợ."
+  },
+  {
+    id: "huongdan-ngung-hoa-don",
+    category: "DN",
+    title: "Phòng tránh và xử lý trát Đình chỉ phát hành hóa đơn khẩn cấp",
+    summary: "Cách chứng minh hoạt động thực tế tại trụ sở đã đăng ký và gỡ phong tỏa hệ thống hóa đơn điện tử VAT của doanh nghiệp.",
+    checklist: [
+      "Đặt biển hiệu công ty rõ ràng ở mặt trước văn phòng hoạt động chính thức.",
+      "Lưu giữ đầy đủ biên lai đóng tiền điện, mạng internet văn phòng đứng tên pháp nhân.",
+      "Duy trì nhân sự túc trực làm việc hoặc ủy quyền pháp nhân đón đoàn xác minh kiểm tra.",
+      "Chuẩn bị bộ chứng từ hóa đơn đầu vào có thật đầy đủ chữ ký giao nhận để chứng minh tính hợp lý."
+    ],
+    warning: "Kế toán không được tự ý đóng cửa văn phòng trống trơn khi biết có đoàn xác minh không báo trước của đội kiểm tra thuế địa bàn, vì điều này sẽ dẫn tới việc bị đình chỉ hóa đơn tự động tức khắc.",
+    steps: [
+      "Bước 1: Chỉnh đốn văn phòng làm việc: Gắn biển hiệu theo đúng thông số pháp lý, rà soát văn bản chứng từ, hợp đồng thuê văn phòng gốc công chứng.",
+      "Bước 2: Gửi tờ trình giải trình: Lập công văn xin xác minh tại địa chỉ kinh doanh, cử người đại diện pháp luật túc trực sẵn sàng tiếp đoàn.",
+      "Bước 3: Lập hồ sơ giải trình hóa đơn đầu vào: Trình báo chứng từ thanh toán ngân hàng (ủy nhiệm chi) kèm hợp đồng kinh tế của các giao dịch bị rà soát rủi ro.",
+      "Bước 4: Ký Biên bản ghi nhận thực tế: Nhận kết quả xác minh đạt yêu cầu của cơ quan quản lý và làm thủ tục khôi phục hệ thống hóa đơn điện tử."
+    ],
+    content: "Trong công tác quản lý rủi ro hóa đơn, nếu cơ quan thuế gửi đoàn xác minh tại địa chỉ đăng ký mà doanh nghiệp không hoạt động hoặc không treo biển hiệu, mã số thuế và quyền xuất hóa đơn sẽ bị phong tỏa loại cảnh báo 'Doanh nghiệp không hoạt động tại địa chỉ'. Doanh nghiệp cần chủ động chuẩn bị các hồ sơ thực tế minh bạch để nhanh chóng khôi phục luồng vận hành dòng tiền.",
+    example: "Công ty TNHH Logistics Sao Mai bị khóa hệ thống hóa đơn do cán bộ đi kiểm tra báo cáo không có người hoạt động tại chung cư đăng ký. Đại lý thuế lập tức rà soát, đồng hành cùng doanh nghiệp treo biển hiệu quy chuẩn, soạn đơn gửi đội kiểm tra nộp mẫu 08-MST xác thực đổi phòng hoạt động và dẫn đoàn nghiệm thu thực địa, gỡ lệnh khóa hóa đơn thành công chỉ sau đúng 3 ngày làm việc."
+  },
+  {
+    id: "huongdan-heso-k",
+    category: "DN",
+    title: "Giải mã thông báo Giải trình Hệ số K để tránh thanh tra thuế",
+    summary: "Lộ trình đối chiếu hóa đơn mua vào - bán ra, giải trình thuyết minh kỹ thuật số liệu chênh lệch an toàn tuyệt đối.",
+    checklist: [
+      "Học cách tự tính hệ số K định kỳ hàng tháng/hàng quý dựa trên tổng trị giá xuất - nhập hóa đơn.",
+      "Thống kê riêng lượng hàng hóa tồn kho thực tế, bảo đảm khớp với bảng nhập - xuất - tồn kế toán.",
+      "Lưu trữ biên bản giao nhận hàng hóa cụ thể, hợp đồng ghi rõ điều khoản bàn giao chậm đối với các lô hàng hóa lớn.",
+      "Nhận biết giới hạn cảnh báo K (hệ số rủi ro trần theo quy định ngành nghề kinh doanh)."
+    ],
+    warning: "Tuyệt đối không giải trình vòng vo, không khớp số liệu thực tế trên tờ khai VAT đã nộp. Mọi sự giải thích không có số liệu chứng minh chi tiết chỉ khiến hồ sơ bị chuyển thẳng sang ban chuyên án thanh tra toàn diện.",
+    steps: [
+      "Bước 1: Kết xuất bảng phân tích rủi ro: Lợi dụng tài khoản thuế điện tử rà soát danh sách hóa đơn mua vào bán ra để tính chỉ số K tương ứng.",
+      "Bước 2: Xác định lý do lệch: Đối chiếu xem có trường hợp mua sỉ từ nhà cung cấp chiết khấu cao, tồn kho hàng chưa tiêu thụ, hoặc chênh lệch chu kỳ luân chuyển.",
+      "Bước 3: Hoàn thiện hồ sơ thuyết minh: Soạn bản giải trình chi tiết, đính kèm bảng kê xuất nhập tồn hàng hóa thực tiễn, làm rõ tiến độ dự án.",
+      "Bước 4: Nộp tờ trình chỉnh lý: Gửi công văn giải trình hệ số K chính thức qua mạng và gặp gỡ trao đổi trực tiếp với cán bộ quản lý phụ trách nếu được yêu cầu."
+    ],
+    content: "Hệ số K là ngưỡng giám sát rủi ro tự động của Tổng cục Thuế nhằm phát hiện kịp thời các hành vi xuất hóa đơn khống hoặc mua bán hóa đơn điện tử không có giao dịch kinh tế thực tế. Khi doanh nghiệp xuất bán ra vượt quá tỷ lệ định trước so với trị giá mua vào của nhóm vật tư sản phẩm tương ứng, hệ thống Trí tuệ nhân tạo (AI) ngành thuế sẽ cảnh báo đỏ, yêu cầu doanh nghiệp giải trình thuyết minh cụ thể.",
+    example: "Một doanh nghiệp thương mại sắt thép bị gửi thông báo giải trình vì có tổng hóa đơn xuất bán ra vượt 1.5 lần tổng hóa đơn mua vào trong tháng (Hệ số K lệch đỏ). Đại lý thuế Thành Phố đã phân tích sổ sách, giải trình rõ chênh lệch là do lượng thép mua tồn kho lớn từ quý trước (đã đóng thuế VAT đầy đủ nhưng chưa tiêu thụ hết), kèm theo hồ sơ biên bản nhập kho quý trước khớp 100%, bảo vệ doanh nghiệp hoàn toàn khỏi diện thanh tra rủi ro."
+  },
+  {
+    id: "huongdan-bhxh-quyettoan",
+    category: "DN",
+    title: "Bí quyết quyết toán Thuế TNDN và tối ưu đóng BHXH cho Doanh nghiệp",
+    summary: "Cách xây dựng thang bảng lương thông minh, đưa phụ cấp lương hợp lệ vào chi phí để giảm thuế thu nhập doanh nghiệp và giảm tải BHXH.",
+    checklist: [
+      "Xây dựng quy chế tài chính và lương thưởng chặt chẽ được hội đồng thành viên phê duyệt chính thức.",
+      "Phân định rõ lương cơ bản đóng bảo hiểm xã hội và các khoản phụ cấp đặc thù được miễn đóng BHXH.",
+      "Đăng ký liên thông thông tin lao động của doanh nghiệp đúng quy chuẩn giữa hai hệ thống Thuế và Bảo hiểm xã hội.",
+      "Lưu giữ đầy đủ hồ sơ ký nhận phụ cấp, bảng chấm công của từng người lao động hàng tháng."
+    ],
+    warning: "Cố tình khai khống danh sách nhân viên không có thực (nhân viên ma) để tính thêm chi phí lương mà không đóng bảo hiểm là hành vi trốn đóng BHXH, trốn thuế cực kỳ nguy hiểm và dễ bị cơ quan chức năng đối chiếu thông qua CCCD liên thông dữ liệu dân cư.",
+    steps: [
+      "Bước 1: Rà quét chênh lệch liên thông dữ liệu: So sánh quỹ lương tờ khai Quyết toán thuế TNCN với danh sách chi trả đóng Bảo hiểm xã hội.",
+      "Bước 2: Cân đối cấu trúc thu nhập: Tách thu nhập của nhân sự thành Lương cơ bản làm căn cứ đóng BHXH, kết hợp với các khoản phụ cấp đúng quy định miễn đóng.",
+      "Bước 3: Thiết lập quy chế thưởng hiệu quả: Lập hệ thống chỉ tiêu hiệu quả KPI và thưởng doanh số đóng vai trò là khoản thu nhập bổ sung không cố định.",
+      "Bước 4: Đại diện bảo vệ số liệu: Khi có đoàn thanh tra kiểm tra giải trình đối chất liên thông, Đại lý thuế đại diện trực tiếp chứng minh tính hợp lý của cấu trúc quỹ lương."
+    ],
+    content: "Chi phí nhân sự luôn chiếm tỷ trọng lớn trong cơ cấu vận hành doanh nghiệp. Từ năm 2026, cơ chế liên thông dữ liệu số CCCD giữa Tổng cục Thuế và cơ quan Bảo hiểm xã hội quốc gia giúp phát hiện ngay lập tức mọi trường hợp doanh nghiệp lách luật khai lệch quỹ lương. Do đó, việc xây dựng một cấu trúc lương thông minh, bảo đảm tính pháp lý là con đường bền vững duy nhất để doanh nghiệp vừa tối ưu chi phí thuế vừa tuân thủ đúng luật bảo hiểm.",
+    example: "Doanh nghiệp công nghệ có 30 nhân sự, lương thực trả trung bình 20 triệu/người. Nếu đóng BHXH trên toàn bộ 20 triệu, doanh nghiệp phải gánh chi phí bảo hiểm vô cùng lớn. Đại lý thuế đã thiết lập lại thang bảng lương thông minh: Lương đóng BHXH là 6.5 triệu (trên mức tối thiểu vùng), phần 13.5 triệu còn lại được phân bổ hợp lệ vào các khoản phụ cấp ăn trưa (730k), phụ cấp trang phục (5tr/năm), phụ cấp điện thoại, xăng xe hỗ trợ công việc và thưởng hiệu quả dự án. Toàn bộ quỹ lương vẫn được tính vào chi phí hợp lý được trừ để giảm thuế TNDN cho công ty, trong khi chi phí BHXH được tối ưu hóa tiết kiệm hơn 340 triệu đồng/năm."
   }
 ];
 
@@ -442,6 +638,27 @@ export const QUICK_ANSWER_FAQS: QuickAnswerFAQ[] = [
     category: "CTTS",
     answer: "Về mặt pháp lý, người có nghĩa vụ thuế là chủ tài sản (chủ nhà). Tuy nhiên hợp đồng có thể thỏa thuận bên thuê nộp thay thuế. Khi đó công ty thuê nhà sẽ khấu trừ trực tiếp 10% thuế trên giá gross, nộp thay kho bạc nhà nước và đứng tên trên tờ khai nộp thay, sau đó đưa tiền net cho chủ nhà.",
     relatedGuides: ["huongdan-doanhthunhabox"]
+  },
+  {
+    id: "faq-q5",
+    question: "Bị cưỡng chế nợ thuế quá hạn dẫn tới khuyết chỉ xuất hóa đơn thì gỡ thế nào?",
+    category: "XL",
+    answer: "Biện pháp nhanh và đúng luật là nộp hồ sơ xin phân kỳ nộp dần tiền nợ thuế (trả góp tối đa 12 tháng) theo Điều 134 Luật Quản lý Thuế. Bạn cần chuẩn bị thư bảo lãnh nghĩa vụ nộp thuế của Ngân hàng thương mại và nộp một phần nợ ngay kỳ đầu tiên (tối thiểu 1/12 tổng nợ), cơ quan thuế sẽ mở lại cổng hóa đơn điện tử.",
+    relatedGuides: ["huongdan-cuongche-nothue"]
+  },
+  {
+    id: "faq-q6",
+    question: "Hệ số K rủi ro hóa đơn chênh lệch là gì và rà quét thế nào?",
+    category: "XL",
+    answer: "Hệ số K là chỉ số đo lường tỷ lệ chênh lệch trị giá hóa đơn bán ra so với hóa đơn mua vào của doanh nghiệp trên cổng Tổng cục Thuế. Khi hệ số này vượt ngưỡng cảnh báo đỏ của ngành nghề đăng ký, hệ thống tự động gắn mác có rủi ro cao để yêu cầu doanh nghiệp giải trình về tồn kho hoặc vòng quay vốn.",
+    relatedGuides: ["huongdan-heso-k"]
+  },
+  {
+    id: "faq-q7",
+    question: "Cơ quan bảo hiểm xã hội (BHXH) có đối chất liên thông với quyết toán thuế TNCN?",
+    category: "DN",
+    answer: "Có, hiện nay hệ thống dữ liệu CCCD liên thông đã chính thức tích hợp cơ sở dữ liệu BHXH với Tổng cục Thuế. Mọi sự không khớp giữa danh sách nhân viên đóng bảo hiểm với danh sách chi trả được giảm thuế TNDN đều được tự động gắn mã cảnh báo thanh tra liên thông liên ngành.",
+    relatedGuides: ["huongdan-bhxh-quyettoan"]
   }
 ];
 

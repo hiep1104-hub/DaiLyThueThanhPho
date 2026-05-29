@@ -29,7 +29,7 @@ export interface LegalDoc {
 
 export interface PracticalGuide {
   id: string;
-  category: "HKD" | "CNKD" | "TMDT" | "CTTS" | "HDDT" | "QTT" | "VIPHAT" | "HUONGDAN";
+  category: "HKD" | "CNKD" | "TMDT" | "CTTS" | "HDDT" | "QTT" | "VIPHAT" | "HUONGDAN" | "DN";
   title: string;
   summary: string;
   checklist: string[];
